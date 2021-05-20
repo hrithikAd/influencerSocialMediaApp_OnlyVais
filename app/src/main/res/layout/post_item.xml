@@ -41,14 +41,25 @@
 <RelativeLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_below="@+id/LayoutName">
+    android:layout_below="@+id/LayoutName"
+    android:id="@+id/LayoutPost">
+    <TextView
+        android:id="@+id/tweet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!!"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
     <ImageView
         android:id="@+id/photo"
         android:adjustViewBounds="true"
         android:layout_height="300dp"
         android:scaleType="centerCrop"
         android:layout_margin="2dp"
-        android:layout_width="match_parent" />
+        android:layout_width="match_parent"
+        android:layout_below="@+id/tweet"/>
 
 
 
@@ -63,7 +74,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_baseline_favorite_border_24"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="4dp"
         android:id="@+id/like_heart"
         ></ImageView>
 
@@ -74,7 +85,7 @@
         android:id="@+id/like_number"
         android:layout_toRightOf="@id/like_heart"
         android:textSize="16sp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="4dp"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="4dp"
         ></TextView>
@@ -82,21 +93,13 @@
 </RelativeLayout>
 
 
-    <TextView
-        android:id="@+id/tweet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!!"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_below="@+id/LikeLayout" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:layout_below="@id/tweet"
-        android:layout_marginTop="8sp"
+        android:layout_below="@id/LikeLayout"
+        android:layout_marginTop="4dp"
         android:id="@+id/time"
         android:text="time"></TextView>
 

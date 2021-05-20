@@ -18,6 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.hrithik.hrithikadhikary.ui.main.ImageAdapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class FeedFragment extends Fragment {
     private RecyclerView mRecyclerView;
@@ -48,6 +49,7 @@ public class FeedFragment extends Fragment {
                     Post_item post = postSnap.getValue(Post_item.class);
                     mPosts.add(post);
                 }
+                Collections.reverse(mPosts);
 
                 mImageAdapter = new ImageAdapter(getContext(),mPosts);
 
