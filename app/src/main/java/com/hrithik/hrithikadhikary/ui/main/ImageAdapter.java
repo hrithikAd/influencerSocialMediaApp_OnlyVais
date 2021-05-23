@@ -1,6 +1,7 @@
 package com.hrithik.hrithikadhikary.ui.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -18,11 +20,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hrithik.hrithikadhikary.Comment;
+import com.hrithik.hrithikadhikary.CommentsActivity;
 import com.hrithik.hrithikadhikary.Post_item;
 import com.hrithik.hrithikadhikary.R;
+import com.hrithik.hrithikadhikary.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 import static android.view.View.GONE;
 
@@ -31,6 +38,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     private Context mContext;
     private ArrayList<Post_item> mPosts;
     private FirebaseUser firebaseUser;
+    private ArrayList<Comment> commentList;
 
     public ImageAdapter(Context context,ArrayList<Post_item> posts){
         mContext = context;
@@ -75,8 +83,132 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                     .into(holder.photoView);
         }
 
+        //feed Comment section
+
+        commentList = new ArrayList<Comment>();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Comments").child(postCurrent.getpost_id());
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                commentList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Comment comment = snapshot.getValue(Comment.class);
+                    commentList.add(comment);
+                }
+
+                String size = String.valueOf(commentList.size());
+                holder.commentCount.setText(size);
+
+                Collections.reverse(commentList);
+                if( !commentList.isEmpty()) {
+
+                    holder.feedCommentName.setVisibility(View.VISIBLE);
+                    holder.feedCommentDp.setVisibility(View.VISIBLE);
+                    holder.feedCommentComment.setVisibility(View.VISIBLE);
+
+                    Comment lastestComment = commentList.get(0);
+                    //name
+                    holder.feedCommentComment.setText(lastestComment.getComment());
+
+                    //get Name and DP
+                    DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference("Users").child(lastestComment.getPublisher());
+
+                    reference2.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                            User userComment = dataSnapshot.getValue(User.class);
+                            Picasso.get()
+                                    .load(userComment.getPhotoUrl())
+                                    .fit()
+                                    .centerCrop()
+                                    .into(holder.feedCommentDp);
+
+                            holder.feedCommentName.setText(userComment.getDisplayName());
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError error) {
+
+                        }
+                    });
+
+
+
+                    //end name and dp
+                }
+                else{
+                    holder.feedCommentComment.setVisibility(GONE);
+                    holder.feedCommentName.setVisibility(GONE);
+                    holder.feedCommentDp.setVisibility(GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+        //end
+
         isLiked(postCurrent.getpost_id(), holder.like_btm);
         nrLikes(holder.like_numberView, postCurrent.getpost_id());
+
+
+        //FeedComment On click
+        holder.feedCommentComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, CommentsActivity.class);
+                intent.putExtra("postid", postCurrent.getpost_id());
+
+
+                //publisher
+
+
+
+                intent.putExtra("publisherid", firebaseUser.getUid());
+                mContext.startActivity(intent);
+            }
+        });
+
+        holder.feedCommentDp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, CommentsActivity.class);
+                intent.putExtra("postid", postCurrent.getpost_id());
+
+
+                //publisher
+
+
+
+                intent.putExtra("publisherid", firebaseUser.getUid());
+                mContext.startActivity(intent);
+            }
+        });
+
+        holder.feedCommentName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, CommentsActivity.class);
+                intent.putExtra("postid", postCurrent.getpost_id());
+
+
+                //publisher
+
+
+
+                intent.putExtra("publisherid", firebaseUser.getUid());
+                mContext.startActivity(intent);
+            }
+        });
+
+
 
         holder.like_btm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +220,23 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                     FirebaseDatabase.getInstance().getReference().child("Likes").child(postCurrent.getpost_id())
                             .child(firebaseUser.getUid()).removeValue();
                 }
+            }
+        });
+
+
+        holder.comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, CommentsActivity.class);
+                intent.putExtra("postid", postCurrent.getpost_id());
+
+
+                //publisher
+
+
+
+                intent.putExtra("publisherid", firebaseUser.getUid());
+                mContext.startActivity(intent);
             }
         });
 
@@ -105,6 +254,11 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         public ImageView like_btm;
         public TextView like_numberView;
         public TextView timeView;
+        public ImageView comment;
+        public ImageView feedCommentDp;
+        public TextView feedCommentName;
+        public TextView feedCommentComment;
+        public TextView commentCount;
 
         public ImageViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -114,7 +268,11 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             timeView = itemView.findViewById(R.id.time);
             tweetView = itemView.findViewById(R.id.tweet);
             photoView = itemView.findViewById(R.id.photo);
-
+            comment = itemView.findViewById(R.id.commentView);
+            feedCommentDp = itemView.findViewById(R.id.feedcomment_image_profile);
+            feedCommentComment = itemView.findViewById(R.id.feedcomment_comment);
+            feedCommentName = itemView.findViewById(R.id.feedcomment_username);
+            commentCount = itemView.findViewById(R.id.commentCount);
         }
     }
 
@@ -158,5 +316,8 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             }
         });
     }
+
+
+
 
 }
