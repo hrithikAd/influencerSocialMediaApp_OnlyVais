@@ -137,7 +137,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ImageVie
             image_profile = itemView.findViewById(R.id.image_profile);
             username = itemView.findViewById(R.id.username);
             comment = itemView.findViewById(R.id.comment);
-
         }
     }
 

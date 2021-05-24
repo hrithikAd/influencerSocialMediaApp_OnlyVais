@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hrithik.hrithikadhikary.ui.main.CommentAdapter;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,8 +36,8 @@ public class CommentsActivity extends AppCompatActivity {
     private List<Comment> commentList;
 
     EditText addcomment;
-    ImageView image_profile;
-    TextView post;
+    ImageView image_profile,fullImage;
+    TextView post,fullTweet;
 
     String postid;
     String publisherid;
@@ -66,8 +68,8 @@ public class CommentsActivity extends AppCompatActivity {
         post = findViewById(R.id.post);
         addcomment = findViewById(R.id.add_comment);
         image_profile = findViewById(R.id.image_profile);
-
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
 
         post.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,8 +84,11 @@ public class CommentsActivity extends AppCompatActivity {
 
         getImage();
         readComments();
+      //  getFullDisplayImage();
 
     }
+
+
 
     private void addComment(){
 

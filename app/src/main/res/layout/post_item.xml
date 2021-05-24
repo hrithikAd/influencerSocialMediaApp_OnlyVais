@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="8dp"
+    >
 <RelativeLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
@@ -18,7 +20,8 @@
             android:layout_height="66dp"
             android:src="@drawable/profilepic"
             app:civ_border_width="2dp"
-            app:civ_border_color="#FF000000"/>
+            app:civ_border_color="#FF000000"
+            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,7 +37,8 @@
             android:src="@drawable/bluetick"
             android:layout_toRightOf="@id/name"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="4dp"></ImageView>
+            android:layout_marginLeft="4dp"
+            ></ImageView>
 
     </RelativeLayout>
 
@@ -55,7 +59,7 @@
     <ImageView
         android:id="@+id/photo"
         android:adjustViewBounds="true"
-        android:layout_height="300dp"
+        android:layout_height="400dp"
         android:scaleType="centerCrop"
         android:layout_margin="2dp"
         android:layout_width="match_parent"
@@ -158,10 +162,36 @@
         android:id="@+id/time"
         android:text="time"></TextView>
 
-</RelativeLayout>
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:layout_below="@id/time">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+
+            <com.google.android.ads.nativetemplates.TemplateView
+                android:id="@+id/my_template"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:gnt_template_type="@layout/gnt_medium_template_view"
+                android:visibility="gone"
+                />
+        </RelativeLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
 
 </RelativeLayout>
+
+
+
+
+</RelativeLayout>
+
+
 
 
 </com.google.android.material.card.MaterialCardView>
