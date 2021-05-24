@@ -55,15 +55,31 @@
         android:textSize="22sp"
         android:textStyle="bold"
         android:textAppearance="?android:attr/textAppearanceMedium"/>
-
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/tweet"
+    android:id="@+id/photo_layout"
+    >
     <ImageView
         android:id="@+id/photo"
         android:adjustViewBounds="true"
-        android:layout_height="400dp"
+        android:layout_height="wrap_content"
         android:scaleType="centerCrop"
         android:layout_margin="2dp"
-        android:layout_width="match_parent"
-        android:layout_below="@+id/tweet"/>
+        android:layout_width="match_parent" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_play_foreground"
+        android:layout_centerInParent="true"
+        android:id="@+id/play"
+        android:visibility="gone"
+        ></ImageView>
+
+
+
+</RelativeLayout>
 
 
 
@@ -71,7 +87,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:id="@+id/LikeLayout"
-    android:layout_below="@id/photo">
+    android:layout_below="@id/photo_layout">
 
     <ImageView
         android:layout_width="wrap_content"

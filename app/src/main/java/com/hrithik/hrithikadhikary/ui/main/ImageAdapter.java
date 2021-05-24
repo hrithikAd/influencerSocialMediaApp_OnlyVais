@@ -1,13 +1,16 @@
 package com.hrithik.hrithikadhikary.ui.main;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -87,13 +90,13 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         holder.timeView.setText(postCurrent.getdate());
         if(postCurrent.gettype()==1){
             //tweet
-
+            holder.play.setVisibility(GONE);
             holder.photoView.setVisibility(GONE);
             holder.tweetView.setText(postCurrent.gettweet());
         }
         else if(postCurrent.gettype()==2) {
             //photo
-
+            holder.play.setVisibility(GONE);
             if(postCurrent.gettweet().equalsIgnoreCase("")){
                 holder.tweetView.setVisibility(GONE);
             }
@@ -104,10 +107,41 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
             Picasso.get()
                     .load(postCurrent.getpicture())
-                    .fit()
-                    .centerCrop()
                     .into(holder.photoView);
         }
+
+        else if(postCurrent.gettype()==3){
+
+            //video
+
+            holder.photoView.setVisibility(View.VISIBLE);
+            Picasso.get()
+                    .load(postCurrent.getpicture())
+                    .resize(1280,720)
+                    .into(holder.photoView);
+
+            holder.tweetView.setText(postCurrent.gettweet());
+            holder.play.setVisibility(View.VISIBLE);
+            holder.photoView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + postCurrent.getvideo()));
+                    Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://www.youtube.com/watch?v=" + postCurrent.getvideo()));
+                    try {
+                        mContext.startActivity(appIntent);
+                    } catch (ActivityNotFoundException ex) {
+                        mContext.startActivity(webIntent);
+                    }
+
+                }
+            });
+
+        }
+
+
+
 
         //feed Comment section
 
@@ -289,6 +323,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         public TextView feedCommentComment;
         public TextView commentCount;
         public TemplateView templateView;
+        public ImageView play;
 
         public ImageViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -304,6 +339,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             feedCommentName = itemView.findViewById(R.id.feedcomment_username);
             commentCount = itemView.findViewById(R.id.commentCount);
             templateView = itemView.findViewById(R.id.my_template);
+            play = itemView.findViewById(R.id.play);
         }
     }
 
