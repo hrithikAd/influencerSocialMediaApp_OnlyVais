@@ -9,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,7 +48,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ImageVie
     private Context mContext;
     private ArrayList<FriendlyMessage> mPosts;
     private FirebaseUser firebaseUser;
-
     public MessageAdapter(Context context,ArrayList<FriendlyMessage> posts){
         mContext = context;
         mPosts = posts;
@@ -70,7 +71,20 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ImageVie
         holder.mMessage.setText(postCurrent.getText());
         Picasso.get()
                 .load(postCurrent.getPhotoUrl())
+                .placeholder(mContext.getResources().getDrawable(R.drawable.darkbackground))
+                .error(mContext.getResources().getDrawable(R.drawable.darkbackground))
                 .into(holder.mPhoto);
+
+
+        //on click name
+        holder.mName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String currentName = postCurrent.getName();
+                //Toast.makeText(mContext,currentName,Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
 
     }
@@ -93,7 +107,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ImageVie
             mName = itemView.findViewById(R.id.nameTextView);
             mMessage = itemView.findViewById(R.id.messageTextView);
             mPhoto = itemView.findViewById(R.id.photoImageView);
-
         }
     }
 }

@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChatFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ChatFragment"
+    android:background="@color/greyBackground">
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -11,10 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/linearLayout"
-        android:stackFromBottom="true"
+        android:layout_marginBottom="0dp"
         android:divider="@android:color/transparent"
+        android:stackFromBottom="true"
         android:transcriptMode="alwaysScroll"
-        tools:listitem="@layout/item_message"/>
+        tools:listitem="@layout/item_message"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -31,7 +36,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:hint="Message #general-chat"
+            android:textColorHint="#50FFFFFF"
+            android:textColor="@color/white"
+            />
 
         <Button
             android:id="@+id/sendButton"
@@ -39,7 +48,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:enabled="false"
-            android:text="Send"/>
+            android:text="Send"
+            android:backgroundTint="#191919"
+            android:textColor="#50FFFFFF"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="4dp"
+            />
 
     </LinearLayout>
 

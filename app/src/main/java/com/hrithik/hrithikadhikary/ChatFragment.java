@@ -1,6 +1,7 @@
 package com.hrithik.hrithikadhikary;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -84,6 +85,8 @@ public class ChatFragment extends Fragment {
 
     private String mUsername;
 
+    private LinearLayoutManager mManager;
+    private ArrayList<FriendlyMessage> friendlyMessages;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -110,13 +113,21 @@ public class ChatFragment extends Fragment {
         mSendButton = (Button) RootView.findViewById(R.id.sendButton);
 
         // Initialize message ListView and its adapter
-        ArrayList<FriendlyMessage> friendlyMessages = new ArrayList<>();
+         friendlyMessages = new ArrayList<>();
 
         // Initialize progress bar
         mProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
         //current user
         FirebaseUser currentUser = mFirebaseAuth.getCurrentUser();
+
+
+        //scroll msgs
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        mLayoutManager.setStackFromEnd(true);
+        //end
+
 
         // Enable Send button when there's text to send
         mMessageEditText.addTextChangedListener(new TextWatcher() {
@@ -166,8 +177,10 @@ public class ChatFragment extends Fragment {
                     friendlyMessages.add(msg);
                 }
 
+
                 messageAdapter = new MessageAdapter(getContext(),friendlyMessages);
                 recyclerView.setAdapter(messageAdapter);
+
             }
 
             @Override
@@ -184,9 +197,18 @@ public class ChatFragment extends Fragment {
     }
 
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
+
+
+
+
+
+
+
 }

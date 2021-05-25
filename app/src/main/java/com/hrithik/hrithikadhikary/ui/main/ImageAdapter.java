@@ -107,6 +107,8 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
             Picasso.get()
                     .load(postCurrent.getpicture())
+                    .placeholder(mContext.getResources().getDrawable(R.drawable.darkbackground))
+                    .error(mContext.getResources().getDrawable(R.drawable.darkbackground))
                     .into(holder.photoView);
         }
 
@@ -118,6 +120,8 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             Picasso.get()
                     .load(postCurrent.getpicture())
                     .resize(1280,720)
+                    .placeholder(mContext.getResources().getDrawable(R.drawable.darkbackground))
+                    .error(mContext.getResources().getDrawable(R.drawable.darkbackground))
                     .into(holder.photoView);
 
             holder.tweetView.setText(postCurrent.gettweet());

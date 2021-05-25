@@ -1,16 +1,26 @@
 package com.hrithik.hrithikadhikary;
+import android.graphics.Color;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,9 +37,12 @@ public class FeedFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private ImageAdapter mImageAdapter;
     private DatabaseReference mDatabaseReference;
+
+    private DatabaseReference mDatabaseReference2;
     private ArrayList<Post_item> mPosts;
-
-
+    private FirebaseAuth mAuth;
+    private FriendlyMessage msg;
+    public Snackbar snack;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -41,6 +54,51 @@ public class FeedFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mPosts = new ArrayList<>();
+
+
+        //chat notification
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        mDatabaseReference2 = FirebaseDatabase.getInstance().getReference("messages");
+        mDatabaseReference2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for(DataSnapshot postSnap2 : snapshot.getChildren()){
+                    msg = postSnap2.getValue(FriendlyMessage.class);
+                }
+
+                if(!msg.getName().equalsIgnoreCase(currentUser.getDisplayName())) {
+
+                    snack = Snackbar.make(RootView, msg.getName()+ ": " + msg.getText(), Snackbar.LENGTH_LONG);
+                    View view = snack.getView();
+                    CoordinatorLayout.LayoutParams params =(CoordinatorLayout.LayoutParams)view.getLayoutParams();
+                    params.gravity = Gravity.TOP;
+                    view.setLayoutParams(params);
+                    snack.show();
+
+                }
+
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(),"Firebase Error",Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+
+
+        //end
+
+
+
+
+
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("posts");
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
@@ -75,5 +133,6 @@ public class FeedFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
     }
+
 
 }

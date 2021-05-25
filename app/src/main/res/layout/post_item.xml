@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="8dp"
+    app:cardBackgroundColor="@color/greyBackground"
     >
 <RelativeLayout
     android:layout_width="wrap_content"
@@ -30,7 +31,9 @@
             android:textStyle="bold"
             android:layout_marginLeft="8dp"
             android:layout_centerVertical="true"
-            android:id="@+id/name"></TextView>
+            android:id="@+id/name"
+            android:textColor="@color/white"
+            ></TextView>
         <ImageView
             android:layout_width="22dp"
             android:layout_height="22dp"
@@ -54,7 +57,9 @@
         android:text="Hello World!!"
         android:textSize="22sp"
         android:textStyle="bold"
-        android:textAppearance="?android:attr/textAppearanceMedium"/>
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/white"
+        />
 <RelativeLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -67,6 +72,7 @@
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
         android:layout_margin="2dp"
+        android:src="@drawable/darkbackground"
         android:layout_width="match_parent" />
     <ImageView
         android:layout_width="wrap_content"
@@ -106,6 +112,7 @@
         android:layout_toRightOf="@id/like_heart"
         android:textSize="16sp"
         android:layout_marginBottom="4dp"
+        android:textColor="@color/white"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="4dp"
         ></TextView>
@@ -158,6 +165,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/feedcomment_comment"
                 android:text="Comment"
+                android:textColor="@color/white"
                 android:maxLines="5"/>
 
         </LinearLayout>
@@ -176,6 +184,7 @@
         android:layout_below="@id/LikeLayout"
         android:layout_marginTop="4dp"
         android:id="@+id/time"
+        android:textColor="@color/white"
         android:text="time"></TextView>
 
     <com.google.android.material.card.MaterialCardView
