@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,34 +29,43 @@ import java.util.ArrayList;
 
 public class VoiceFragment extends Fragment  {
 
-private RelativeLayout relativeLayout;
+
 private FirebaseAuth mAuth;
 private DatabaseReference mDatabaseReference;
-private ArrayList<FriendlyMessage> voiceMember;
+private ArrayList<User> voiceMember;
 private VoiceAdapter voiceAdapter;
 private RecyclerView recyclerView;
+private ImageView voiceLogoView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View RootView = inflater.inflate(R.layout.fragment_voice, container, false);
 
-        relativeLayout = RootView.findViewById(R.id.voiceLayout);
+
+        voiceLogoView = RootView.findViewById(R.id.voiceLogo);
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
+
         recyclerView = RootView.findViewById(R.id.voiceRecycler);
 
-        voiceMember = new ArrayList<FriendlyMessage>();
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("voice");
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        voiceMember = new ArrayList<>();
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         //read voice member
 
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference("voice");
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-
+                voiceMember.clear();
                 for(DataSnapshot postSnap : snapshot.getChildren()){
-                    FriendlyMessage member = postSnap.getValue(FriendlyMessage.class);
+                    User member = postSnap.getValue(User.class);
                     voiceMember.add(member);
                 }
 
@@ -72,13 +83,10 @@ private RecyclerView recyclerView;
         //end
 
 
-        relativeLayout.setOnClickListener(new View.OnClickListener() {
+        voiceLogoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
-                Intent intent = new Intent(getActivity(), JitsiActivity.class);
+              Intent intent = new Intent(getActivity(), JitsiActivity.class);
                 startActivity(intent);
             }
         });

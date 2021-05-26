@@ -3,13 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".VoiceFragment"
-    android:background="@color/greyBackground">
+    android:background="@color/background">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/voiceLayout">
+        android:id="@+id/voiceLayout"
+        >
 
         <ImageView
             android:layout_width="100dp"
@@ -36,8 +38,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/voiceLayout"
-        tools:listitem="@layout/item_message"
-        android:layout_marginTop="-6dp"></androidx.recyclerview.widget.RecyclerView>
+        tools:listitem="@layout/voice_item"
+        android:layout_marginTop="-6dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 
 </RelativeLayout>

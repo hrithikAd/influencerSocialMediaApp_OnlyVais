@@ -78,8 +78,8 @@ public class JitsiActivity extends AppCompatActivity implements JitsiMeetActivit
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("voice");
-        FriendlyMessage voiceProfile = new FriendlyMessage("",currentUser.getDisplayName(),currentUser.getPhotoUrl().toString());
+        DatabaseReference myRef = database.getReference().child("voice");
+        User voiceProfile = new User(currentUser.getUid(),currentUser.getDisplayName(),currentUser.getPhotoUrl().toString());
         myRef.child(currentUser.getUid()).setValue(voiceProfile);
     }
 
