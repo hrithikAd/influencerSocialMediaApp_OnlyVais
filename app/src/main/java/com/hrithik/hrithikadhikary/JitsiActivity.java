@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.hrithik.hrithikadhikary.ui.main.GlobalSnackClass;
 
 import org.jitsi.meet.sdk.JitsiMeetActivity;
 import org.jitsi.meet.sdk.JitsiMeetActivityInterface;
@@ -48,6 +49,12 @@ public class JitsiActivity extends AppCompatActivity implements JitsiMeetActivit
 
         JitsiMeetUserInfo userInfo = new JitsiMeetUserInfo();
         userInfo.setDisplayName(currentUser.getDisplayName());
+
+        //snack
+        if (GlobalSnackClass.snack != null ){
+            GlobalSnackClass.snack.dismiss();
+        }
+        //end
 
         try {
             userInfo.setAvatar(new URL(currentUser.getPhotoUrl().toString()));
@@ -130,6 +137,5 @@ public class JitsiActivity extends AppCompatActivity implements JitsiMeetActivit
         super.onPause();
         finish();
     }
-
 
 }

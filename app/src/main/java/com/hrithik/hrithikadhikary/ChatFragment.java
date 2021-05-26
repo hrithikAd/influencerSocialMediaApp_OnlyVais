@@ -38,6 +38,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.hrithik.hrithikadhikary.ui.main.GlobalSnackClass;
 import com.hrithik.hrithikadhikary.ui.main.ImageAdapter;
 import com.hrithik.hrithikadhikary.ui.main.MessageAdapter;
 
@@ -56,13 +57,7 @@ public class ChatFragment extends Fragment {
 
     public static final String ANONYMOUS = "anonymous";
     public static final int DEFAULT_MSG_LENGTH_LIMIT = 1000;
-    public static final String FRIENDLY_MSG_LENGTH_KEY = "friendly_msg_length";
 
-    public static final int RC_SIGN_IN = 1;
-    private static final int RC_PHOTO_PICKER = 2;
-
-    private ListView mMessageListView;
-    private MessageAdapter mMessageAdapter;
     private ProgressBar mProgressBar;
     private ImageButton mPhotoPickerButton;
     private EditText mMessageEditText;
@@ -94,7 +89,11 @@ public class ChatFragment extends Fragment {
         // Inflate the layout for this fragment
         View RootView = inflater.inflate(R.layout.fragment_chat, container, false);
 
-        recyclerView = (RecyclerView) RootView.findViewById(R.id.messageRecycler);
+
+
+
+
+                recyclerView = (RecyclerView) RootView.findViewById(R.id.messageRecycler);
         recyclerView.hasFixedSize();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -204,10 +203,6 @@ public class ChatFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
     }
-
-
-
-
 
 
 

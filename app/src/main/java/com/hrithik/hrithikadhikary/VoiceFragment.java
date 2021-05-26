@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hrithik.hrithikadhikary.ui.main.GlobalSnackClass;
 import com.hrithik.hrithikadhikary.ui.main.MessageAdapter;
 import com.hrithik.hrithikadhikary.ui.main.VoiceAdapter;
 
@@ -107,6 +108,9 @@ private ImageView voiceLogoView;
 
     }
 
+
+
+
     @Override
     public void onResume() {
 
@@ -129,4 +133,6 @@ private ImageView voiceLogoView;
 
 
     }
+
+
 }
