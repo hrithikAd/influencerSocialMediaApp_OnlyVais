@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:text="user"
             android:textStyle="bold"
-            android:textColor="@color/purple_700"
+            android:textColor="#50FFFFFF"
             android:id="@+id/username"/>
 
         <TextView
@@ -32,6 +32,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/comment"
             android:text="Comment"
+            android:textColor="@color/white"
             android:maxLines="5"/>
 
     </LinearLayout>

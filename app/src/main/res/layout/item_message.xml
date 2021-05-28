@@ -36,7 +36,8 @@
         android:layout_weight="0"
         android:layout_toRightOf="@id/photoImageView"
         android:layout_marginLeft="10dp"
-        android:textColor="#FFFFFF"
+        android:textColor="#50FFFFFF"
+        android:textStyle="bold"
         tools:text="Name"
         />
 

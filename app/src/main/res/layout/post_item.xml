@@ -139,8 +139,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/commentView">
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:id="@+id/feedcomment_image_profile"/>
 
         <LinearLayout
@@ -157,7 +157,7 @@
                 android:layout_height="wrap_content"
                 android:text="user"
                 android:textStyle="bold"
-                android:textColor="@color/purple_700"
+                android:textColor="#50FFFFFF"
                 android:id="@+id/feedcomment_username"/>
 
             <TextView

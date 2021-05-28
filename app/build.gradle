@@ -66,6 +66,7 @@ dependencies {
     implementation project(':NativeTemplatesAndroid-1.0.0')
 
     implementation ('org.jitsi.react:jitsi-meet-sdk:2.+') { transitive = true }
+    implementation 'com.google.android.play:core:1.7.3'
 
 
 }

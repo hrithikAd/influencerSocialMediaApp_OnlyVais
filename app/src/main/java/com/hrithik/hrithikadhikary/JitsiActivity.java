@@ -74,6 +74,8 @@ public class JitsiActivity extends AppCompatActivity implements JitsiMeetActivit
                 .setFeatureFlag("invite.enabled", false)
                 .setFeatureFlag("ios.recording.enabled", false)
                 .setFeatureFlag("meeting-name.enabled", false)
+                .setFeatureFlag("recording.enabled",false)
+                .setFeatureFlag("audio-mute.enabled",false)
                 .setUserInfo(userInfo)
                 .setWelcomePageEnabled(false)
                 .build();

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -37,6 +38,7 @@ private ArrayList<User> voiceMember;
 private VoiceAdapter voiceAdapter;
 private RecyclerView recyclerView;
 private ImageView voiceLogoView;
+private Button joinButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,6 +60,8 @@ private ImageView voiceLogoView;
         voiceMember = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+
+        joinButton = RootView.findViewById(R.id.join);
         //read voice member
 
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
@@ -84,7 +88,7 @@ private ImageView voiceLogoView;
         //end
 
 
-        voiceLogoView.setOnClickListener(new View.OnClickListener() {
+        joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
               Intent intent = new Intent(getActivity(), JitsiActivity.class);
