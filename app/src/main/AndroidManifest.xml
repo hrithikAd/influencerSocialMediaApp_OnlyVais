@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.hrithik.hrithikadhikary">
+    package="com.hrithik.onlydogs">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -14,10 +14,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HrithikAdhikary">
-        <activity android:name=".JitsiActivity"></activity>
+        <activity android:name="com.hrithik.onlydogs.ProfileActivity"></activity>
+        <activity android:name="com.hrithik.onlydogs.UploadActivity" />
+
 
         <service
-            android:name=".ui.main.MyFirebaseMessagingService"
+            android:name="com.hrithik.onlydogs.ui.main.MyFirebaseMessagingService"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -25,10 +27,10 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".CommentsActivity" />
-        <activity android:name=".Login" />
+        <activity android:name="com.hrithik.onlydogs.CommentsActivity" />
+        <activity android:name="com.hrithik.onlydogs.Login" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.hrithik.onlydogs.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.HrithikAdhikary.NoActionBar">
             <intent-filter>
@@ -39,7 +41,7 @@
         </activity> <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713" />
+            android:value="ca-app-pub-7056810959104454~5109540380" />
     </application>
 
 </manifest>
