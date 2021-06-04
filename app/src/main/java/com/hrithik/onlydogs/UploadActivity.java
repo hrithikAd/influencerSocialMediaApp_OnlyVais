@@ -140,7 +140,7 @@ public class UploadActivity extends AppCompatActivity {
             //img size reduce
             Bitmap bmp = MediaStore.Images.Media.getBitmap(getContentResolver(), imageURI);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bmp.compress(Bitmap.CompressFormat.JPEG, 15, baos);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 25, baos);
             byte[] data = baos.toByteArray();
             //end
 
@@ -175,7 +175,13 @@ public class UploadActivity extends AppCompatActivity {
                     ref.child(postId).setValue(post);
 
 
-                    noti();
+
+
+
+                    if(Currentuser.getEmail().equals("hrithik.carbon@gmail.com")){
+                        noti();
+                    }
+
                     pd.dismiss();
                     startActivity(new Intent(UploadActivity.this , MainActivity.class));
                     finish();

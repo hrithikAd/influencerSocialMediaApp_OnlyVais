@@ -17,6 +17,7 @@
         android:layout_height="match_parent"
         android:id="@+id/recycler_view"
         android:layout_below="@+id/toolbar"
+        android:background="@color/black"
         >
 
     </androidx.recyclerview.widget.RecyclerView>

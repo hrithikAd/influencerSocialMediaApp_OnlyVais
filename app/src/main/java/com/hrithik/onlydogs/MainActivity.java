@@ -49,7 +49,6 @@ import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity    {
     FirebaseAuth Fauth;
-    DatabaseReference databaseReference;
     private RecyclerView mRecyclerView;
     private ImageAdapter mImageAdapter;
     private DatabaseReference mDatabaseReference;
@@ -59,22 +58,24 @@ public class MainActivity extends AppCompatActivity    {
     private FloatingActionButton floatingActionButton;
     private ProgressBar progressBar;
     private static final int RC_APP_UPDATE = 100;
+    private FirebaseUser Currentuser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Currentuser = FirebaseAuth.getInstance().getCurrentUser();
         //toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         mRecyclerView = (RecyclerView)findViewById(R.id.recycler_view);
+        inAppUpdate();
 
         FirebaseMessaging.getInstance().subscribeToTopic("/topics/HrithikAdhikary");
 
         if (isOnline()) {
 
-            inAppUpdate();
+           //inAppUpdate();
 
             load();
         } else {
@@ -112,6 +113,7 @@ public class MainActivity extends AppCompatActivity    {
                 Fauth = FirebaseAuth.getInstance();
                 if (Fauth.getCurrentUser() != null) {
 
+                    FirebaseMessaging.getInstance().subscribeToTopic("/topics/".concat(Currentuser.getUid()));
                     feed();
 
                 } else {
@@ -178,8 +180,6 @@ public class MainActivity extends AppCompatActivity    {
         });
 
     }
-
-   
 
 
     private void logOut() {
@@ -278,4 +278,5 @@ public class MainActivity extends AppCompatActivity    {
         Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
         startActivity(intent);
     }
+
 }

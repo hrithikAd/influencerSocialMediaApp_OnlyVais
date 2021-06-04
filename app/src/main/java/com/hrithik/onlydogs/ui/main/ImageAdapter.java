@@ -7,10 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.ads.nativetemplates.TemplateView;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
@@ -41,6 +39,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     private FirebaseUser firebaseUser;
     private ArrayList<Comment> commentList;
 
+
     public ImageAdapter(Context context,ArrayList<Post_item> posts){
         mContext = context;
         mPosts = posts;
@@ -51,33 +50,11 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(mContext).inflate(R.layout.post_item,parent,false);
         return new ImageViewHolder(v);
+
     }
 
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
-        if(position%4==0) {
-        //ad
-        AdLoader.Builder builder = new AdLoader.Builder(
-                mContext, "ca-app-pub-7056810959104454/2669071694");
-
-        builder.forUnifiedNativeAd(new UnifiedNativeAd.OnUnifiedNativeAdLoadedListener() {
-            @Override
-            public void onUnifiedNativeAdLoaded(UnifiedNativeAd unifiedNativeAd) {
-                holder.templateView.setNativeAd(unifiedNativeAd);
-            }
-        });
-
-        final AdLoader adLoader = builder.build();
-//ad
-
-
-            adLoader.loadAd(new AdRequest.Builder().build());
-            holder.templateView.setVisibility(View.VISIBLE);
-        }
-        //end
-
-
-
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         Post_item postCurrent = mPosts.get(position);
@@ -99,6 +76,16 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                         .into(holder.profilePic);
 
                 holder.profileName.setText(userProf.getDisplayName());
+                //blue tick
+
+                if(userProf.getUserId().equals("N1YgunucCQTDtRmFRgGgFc7oGEs1")){
+                    holder.blueTick.setVisibility(View.VISIBLE);
+                }
+                else{
+                    holder.blueTick.setVisibility(GONE);
+                }
+
+                //end
             }
 
             @Override
@@ -109,14 +96,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
         //..
 
-        //blue tick
-        if(firebaseUser.getEmail().equals("hrithik.carbon@gmail.com")){
-            holder.blueTick.setVisibility(View.VISIBLE);
-        }
-        else{
-            holder.blueTick.setVisibility(GONE);
-        }
-        //end
+
+
+
 
             //photo
             holder.play.setVisibility(GONE);
@@ -388,8 +370,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             }
         });
     }
-
-
 
 
 }
