@@ -85,6 +85,7 @@ public class UploadActivity extends AppCompatActivity {
 
 
 
+
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,12 +176,8 @@ public class UploadActivity extends AppCompatActivity {
                     ref.child(postId).setValue(post);
 
 
+                    noti();
 
-
-
-                    if(Currentuser.getEmail().equals("hrithik.carbon@gmail.com")){
-                        noti();
-                    }
 
                     pd.dismiss();
                     startActivity(new Intent(UploadActivity.this , MainActivity.class));

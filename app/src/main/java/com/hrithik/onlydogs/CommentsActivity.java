@@ -140,7 +140,9 @@ public class CommentsActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
                         User commentUser = dataSnapshot.getValue(User.class);
-                        noti(commentPost.getuser(), commentUser.getDisplayName(), noticomment);
+                        if (!Currentuser.getDisplayName().equals(commentUser.getDisplayName())) {
+                            noti(commentPost.getuser(), commentUser.getDisplayName(), noticomment);
+                        }
                     }
 
                     @Override

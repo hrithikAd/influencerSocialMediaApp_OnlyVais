@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hrithik.onlydogs.CommentsActivity;
+import com.hrithik.onlydogs.GalleryActivity;
 import com.hrithik.onlydogs.MainActivity;
 import com.hrithik.onlydogs.R;
 import com.hrithik.onlydogs.User;
@@ -67,18 +68,18 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ImageVie
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(mContext, MainActivity.class);
-                intent.putExtra("publisherid", comment.getPublisher());
-                mContext.startActivity(intent);
+                Intent i = new Intent(mContext, GalleryActivity.class);
+                i.putExtra("user", comment.getPublisher());
+                mContext.startActivity(i);
             }
         });
 
         holder.image_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, MainActivity.class);
-                intent.putExtra("publisherid", comment.getPublisher());
-                mContext.startActivity(intent);
+                Intent i = new Intent(mContext, GalleryActivity.class);
+                i.putExtra("user", comment.getPublisher());
+                mContext.startActivity(i);
             }
         });
 

@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hrithik.onlydogs.Comment;
 import com.hrithik.onlydogs.CommentsActivity;
+import com.hrithik.onlydogs.GalleryActivity;
 import com.hrithik.onlydogs.Post_item;
 import com.hrithik.onlydogs.R;
 import com.hrithik.onlydogs.User;
@@ -38,7 +39,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     private ArrayList<Post_item> mPosts;
     private FirebaseUser firebaseUser;
     private ArrayList<Comment> commentList;
-
 
     public ImageAdapter(Context context,ArrayList<Post_item> posts){
         mContext = context;
@@ -76,6 +76,31 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                         .into(holder.profilePic);
 
                 holder.profileName.setText(userProf.getDisplayName());
+
+                //on click profile image
+                holder.profilePic.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(mContext, GalleryActivity.class);
+                        i.putExtra("user", userProf.getUserId());
+                        mContext.startActivity(i);
+
+                    }
+                });
+
+                holder.profileName.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(mContext, GalleryActivity.class);
+                        i.putExtra("user", userProf.getUserId());
+                        mContext.startActivity(i);
+                    }
+                });
+
+                //profile
+
+
+
                 //blue tick
 
                 if(userProf.getUserId().equals("N1YgunucCQTDtRmFRgGgFc7oGEs1")){
