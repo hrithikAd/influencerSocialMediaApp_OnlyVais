@@ -1,4 +1,4 @@
-package com.hrithik.hrithikadhikary;
+package com.hrithik.onlydogs;
 
 import org.junit.Test;
 

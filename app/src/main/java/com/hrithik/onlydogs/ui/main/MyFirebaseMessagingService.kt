@@ -1,4 +1,4 @@
-package com.hrithik.hrithikadhikary.ui.main
+package com.hrithik.onlydogs.ui.main
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -13,8 +13,8 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.hrithik.hrithikadhikary.MainActivity
-import com.hrithik.hrithikadhikary.R
+import com.hrithik.onlydogs.MainActivity
+import com.hrithik.onlydogs.R
 import java.util.*
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
@@ -44,12 +44,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         val largeIcon = BitmapFactory.decodeResource(
                 resources,
-                R.drawable.ic_launcher_foreground
+                R.drawable.ic_noti_icon
         )
 
         val notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setSmallIcon(R.drawable.ic_noti_icon)
                 .setLargeIcon(largeIcon)
                 .setContentTitle(p0?.data?.get("title"))
                 .setContentText(p0?.data?.get("message"))

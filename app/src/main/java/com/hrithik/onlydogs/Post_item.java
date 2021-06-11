@@ -1,10 +1,10 @@
-package com.hrithik.hrithikadhikary;
+package com.hrithik.onlydogs;
 
 
 public class Post_item {
 
     private String mpost_id;
-    private int mtype;
+    private String muser;
     private String mtweet;
     private String mvideo;
     private String mpicture;
@@ -15,9 +15,9 @@ public class Post_item {
 
     }
 
-    public Post_item(String post_id,int type, String tweet, String video, String picture, String date, int like){
+    public Post_item(String post_id,String user, String tweet, String video, String picture, String date, int like){
         mpost_id=post_id;
-        mtype=type;
+        muser=user;
         mtweet=tweet;
         mvideo=video;
         mpicture=picture;
@@ -33,12 +33,12 @@ public class Post_item {
         this.mpost_id = mpost_id;
     }
 
-    public int gettype() {
-        return mtype;
+    public String getuser() {
+        return muser;
     }
 
-    public void settype(int mtype) {
-        this.mtype = mtype;
+    public void setuser(String muser) {
+        this.muser = muser;
     }
 
     public String gettweet() {

@@ -1,4 +1,4 @@
-package com.hrithik.hrithikadhikary;
+package com.hrithik.onlydogs;
 
 
 import androidx.annotation.NonNull;
@@ -22,8 +22,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.HashMap;
 
 public class Login extends AppCompatActivity {
 

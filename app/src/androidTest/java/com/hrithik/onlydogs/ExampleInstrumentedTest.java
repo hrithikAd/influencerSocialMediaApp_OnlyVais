@@ -1,4 +1,4 @@
-package com.hrithik.hrithikadhikary;
+package com.hrithik.onlydogs;
 
 import android.content.Context;
 

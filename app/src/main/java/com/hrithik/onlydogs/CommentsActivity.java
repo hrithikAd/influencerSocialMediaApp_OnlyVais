@@ -1,4 +1,4 @@
-package com.hrithik.hrithikadhikary;
+package com.hrithik.onlydogs;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,13 +7,18 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,19 +27,26 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.hrithik.hrithikadhikary.ui.main.CommentAdapter;
+import com.hrithik.onlydogs.ui.main.CommentAdapter;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static android.view.View.GONE;
 
 public class CommentsActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private CommentAdapter commentAdapter;
     private List<Comment> commentList;
-
+    private Post_item commentPost;
+    private String Noticomment;
     EditText addcomment;
     ImageView image_profile,fullImage;
     TextView post,fullTweet;
@@ -44,12 +56,19 @@ public class CommentsActivity extends AppCompatActivity {
 
     FirebaseUser firebaseUser;
 
+
+    //noti
+    private FirebaseUser Currentuser;
+    private String FCM_API = "https://fcm.googleapis.com/fcm/send";
+    private String serverKey =  "key=" + "AAAALfTg9Fk:APA91bEzdRcKp01J1vB8SmgvWZ2RXjsXvi7gMPfjiR55NKN7-0-oxi4NLcZx30OAM0DON3ksx26ikDC-QpMIv5ULTsT6sWnd-zN42KnM2jIKwDSDraUl4QuJsxTZUTETKIlXDmpq_f4Q";
+    private String contenttype = "application/json";
+    //end
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
 
-
+        Currentuser = FirebaseAuth.getInstance().getCurrentUser();
         Intent intent = getIntent();
         postid = intent.getStringExtra("postid");
         publisherid = intent.getStringExtra("publisherid");
@@ -77,7 +96,9 @@ public class CommentsActivity extends AppCompatActivity {
                 if (addcomment.getText().toString().equals("")){
                     Toast.makeText(CommentsActivity.this, "You can't send empty message", Toast.LENGTH_SHORT).show();
                 } else {
-                    addComment();
+                    Noticomment=addcomment.getText().toString();
+                    addComment(Noticomment);
+
                 }
             }
         });
@@ -90,7 +111,8 @@ public class CommentsActivity extends AppCompatActivity {
 
 
 
-    private void addComment(){
+
+    private void addComment(String noticomment){
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Comments").child(postid);
 
@@ -103,7 +125,45 @@ public class CommentsActivity extends AppCompatActivity {
 
         reference.child(commentid).setValue(hashMap);
 
+
+
+        //noti
+        DatabaseReference reference3 = FirebaseDatabase.getInstance().getReference("posts").child(postid);
+        reference3.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                commentPost = dataSnapshot.getValue(Post_item.class);
+                DatabaseReference reference4 = FirebaseDatabase.getInstance().getReference("Users").child(commentPost.getuser());
+                reference4.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        User commentUser = dataSnapshot.getValue(User.class);
+                        if (!Currentuser.getDisplayName().equals(commentUser.getDisplayName())) {
+                            noti(commentPost.getuser(), commentUser.getDisplayName(), noticomment);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+
+            }
+        });
+
+//end
+
         addcomment.setText("");
+
+
 
     }
 
@@ -146,4 +206,52 @@ public class CommentsActivity extends AppCompatActivity {
             }
         });
     }
+
+    //notification
+    private void noti(String userID,String UserName, String comment) {
+        JSONObject notification = new JSONObject();
+        JSONObject notifcationBody = new JSONObject();
+        String topic = "/topics/".concat(userID);
+        try {
+            notifcationBody.put("title", UserName.concat(" commented on your post"));
+            notifcationBody.put("message", comment)  ; //Enter your notification message
+            notification.put("to", topic);
+            notification.put("data", notifcationBody);
+
+        } catch (JSONException e) {
+
+        }
+
+        sendNotification(notification);
+    }
+    private void sendNotification(JSONObject notification) {
+
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST,FCM_API,notification,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Toast.makeText(getApplicationContext(), response.toString(),Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("Authorization", serverKey);
+                params.put("Content-Type", contenttype);
+
+                return params;
+            }
+        };
+
+        queue.add(jsObjRequest);
+
+    }
+    //end
 }

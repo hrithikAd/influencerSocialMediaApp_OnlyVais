@@ -1,4 +1,4 @@
-package com.hrithik.hrithikadhikary.ui.main;
+package com.hrithik.onlydogs.ui.main;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -24,12 +24,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.hrithik.hrithikadhikary.CommentsActivity;
-import com.hrithik.hrithikadhikary.MainActivity;
-import com.hrithik.hrithikadhikary.R;
-import com.hrithik.hrithikadhikary.User;
-
-import org.w3c.dom.Comment;
+import com.hrithik.onlydogs.CommentsActivity;
+import com.hrithik.onlydogs.GalleryActivity;
+import com.hrithik.onlydogs.MainActivity;
+import com.hrithik.onlydogs.R;
+import com.hrithik.onlydogs.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,12 +36,12 @@ import java.util.List;
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ImageViewHolder> {
 
     private Context mContext;
-    private List<com.hrithik.hrithikadhikary.Comment> mComment = new ArrayList<>();
+    private List<com.hrithik.onlydogs.Comment> mComment = new ArrayList<>();
     private String postid;
 
     private FirebaseUser firebaseUser;
 
-    public CommentAdapter(CommentsActivity context, List<com.hrithik.hrithikadhikary.Comment> commentList, String postid){
+    public CommentAdapter(CommentsActivity context, List<com.hrithik.onlydogs.Comment> commentList, String postid){
         mContext = context;
         mComment = commentList;
         this.postid = postid;
@@ -60,7 +59,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ImageVie
     public void onBindViewHolder(@NonNull final CommentAdapter.ImageViewHolder holder, final int position) {
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        final com.hrithik.hrithikadhikary.Comment comment = (com.hrithik.hrithikadhikary.Comment) mComment.get(position);
+        final com.hrithik.onlydogs.Comment comment = (com.hrithik.onlydogs.Comment) mComment.get(position);
 
         holder.comment.setText(comment.getComment());
         getUserInfo(holder.image_profile, holder.username, comment.getPublisher());
@@ -69,18 +68,18 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ImageVie
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(mContext, MainActivity.class);
-                intent.putExtra("publisherid", comment.getPublisher());
-                mContext.startActivity(intent);
+                Intent i = new Intent(mContext, GalleryActivity.class);
+                i.putExtra("user", comment.getPublisher());
+                mContext.startActivity(i);
             }
         });
 
         holder.image_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, MainActivity.class);
-                intent.putExtra("publisherid", comment.getPublisher());
-                mContext.startActivity(intent);
+                Intent i = new Intent(mContext, GalleryActivity.class);
+                i.putExtra("user", comment.getPublisher());
+                mContext.startActivity(i);
             }
         });
 
