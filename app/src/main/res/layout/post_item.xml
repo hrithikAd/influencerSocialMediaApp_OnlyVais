@@ -14,36 +14,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/LayoutName">
-
         <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/profile_image"
             android:layout_width="66dp"
             android:layout_height="66dp"
-            android:src="@mipmap/ic_launcher"
+            android:src="@drawable/profilepic"
+            app:civ_border_width="2dp"
             app:civ_border_color="#FF000000"
-            app:civ_border_width="2dp" />
-
+            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Dogggyy"
+            android:text="Hrithik Adhikary"
             android:layout_toRightOf="@id/profile_image"
             android:textStyle="bold"
             android:layout_marginLeft="8dp"
             android:layout_centerVertical="true"
-            android:id="@+id/profileName"
+            android:id="@+id/name"
             android:textColor="@color/white"
             ></TextView>
-
         <ImageView
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:src="@drawable/bluetick"
-            android:layout_toRightOf="@id/profileName"
+            android:layout_toRightOf="@id/name"
             android:layout_centerVertical="true"
             android:layout_marginLeft="4dp"
-            android:id="@+id/blueTick"
-            android:visibility="gone"
             ></ImageView>
 
     </RelativeLayout>
@@ -99,8 +96,8 @@
     android:layout_below="@id/photo_layout">
 
     <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:src="@drawable/ic_baseline_favorite_border_24"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="4dp"
@@ -121,8 +118,8 @@
         ></TextView>
 
     <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_toRightOf="@id/like_number"
         android:src="@drawable/ic_baseline_comment_24"
         android:layout_marginTop="8dp"
@@ -140,7 +137,7 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/like_heart">
+        android:layout_below="@id/commentView">
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="35dp"
             android:layout_height="35dp"

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "648672613375",
+    "project_id": "onlyvais-391df",
+    "storage_bucket": "onlyvais-391df.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:648672613375:android:c6841882a09148a7a44dca",
+        "android_client_info": {
+          "package_name": "com.hrithik.hrithikadhikary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "648672613375-3lflaslla2n9mehg1q3sg7nt6qo5spe1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAC9uHtfcEnmj3yPtZD3GsnvCns5lYU_0U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "648672613375-3lflaslla2n9mehg1q3sg7nt6qo5spe1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
