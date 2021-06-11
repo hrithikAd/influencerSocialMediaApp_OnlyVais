@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "197381911641",
+    "project_id": "onlydogs2-612a0",
+    "storage_bucket": "onlydogs2-612a0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:197381911641:android:073a8300ab0890e93f2d48",
+        "android_client_info": {
+          "package_name": "com.hrithik.onlydogs"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "197381911641-c9oa0vgkijkm2uvhopa94cfauud4avge.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxYJ80satnsNtbByxFQMafb_jgqTAbNRg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "197381911641-c9oa0vgkijkm2uvhopa94cfauud4avge.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
