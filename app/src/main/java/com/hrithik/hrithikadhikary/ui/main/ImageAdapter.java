@@ -47,7 +47,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         View v = LayoutInflater.from(mContext).inflate(R.layout.post_item,parent,false);
         return new ImageViewHolder(v);
     }
-
+//
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
 
