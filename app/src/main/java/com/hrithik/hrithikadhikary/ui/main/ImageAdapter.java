@@ -8,18 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
-import com.google.android.ads.nativetemplates.TemplateView;
-import com.google.android.gms.ads.AdLoader;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.formats.UnifiedNativeAd;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -33,9 +24,7 @@ import com.hrithik.hrithikadhikary.Post_item;
 import com.hrithik.hrithikadhikary.R;
 import com.hrithik.hrithikadhikary.User;
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 import static android.view.View.GONE;
@@ -61,29 +50,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
-        if(position%6==0) {
-        //ad
-        AdLoader.Builder builder = new AdLoader.Builder(
-                mContext, "ca-app-pub-3940256099942544/2247696110");
-
-        builder.forUnifiedNativeAd(new UnifiedNativeAd.OnUnifiedNativeAdLoadedListener() {
-            @Override
-            public void onUnifiedNativeAdLoaded(UnifiedNativeAd unifiedNativeAd) {
-                holder.templateView.setNativeAd(unifiedNativeAd);
-            }
-        });
-
-        final AdLoader adLoader = builder.build();
-//ad
-
-
-            adLoader.loadAd(new AdRequest.Builder().build());
-            holder.templateView.setVisibility(View.VISIBLE);
-        }
-        //end
-
-
-
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         Post_item postCurrent = mPosts.get(position);
@@ -326,7 +292,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         public TextView feedCommentName;
         public TextView feedCommentComment;
         public TextView commentCount;
-        public TemplateView templateView;
         public ImageView play;
 
         public ImageViewHolder(@NonNull View itemView) {
@@ -342,7 +307,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             feedCommentComment = itemView.findViewById(R.id.feedcomment_comment);
             feedCommentName = itemView.findViewById(R.id.feedcomment_username);
             commentCount = itemView.findViewById(R.id.commentCount);
-            templateView = itemView.findViewById(R.id.my_template);
             play = itemView.findViewById(R.id.play);
         }
     }

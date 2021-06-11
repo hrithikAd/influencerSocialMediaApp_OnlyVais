@@ -105,7 +105,7 @@ public class FeedFragment extends Fragment {
                     msg = postSnap2.getValue(FriendlyMessage.class);
                 }
 
-                if (!msg.getName().equalsIgnoreCase(currentUser.getDisplayName())) {
+                if (msg!=null && !msg.getName().equalsIgnoreCase(currentUser.getDisplayName())) {
 
 
 
@@ -127,7 +127,11 @@ public class FeedFragment extends Fragment {
                     }, DELAY);
 
                 }
-            }
+
+
+
+
+           }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
