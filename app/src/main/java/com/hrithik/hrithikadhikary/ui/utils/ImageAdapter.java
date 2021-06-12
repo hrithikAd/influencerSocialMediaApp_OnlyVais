@@ -1,4 +1,4 @@
-package com.hrithik.hrithikadhikary.ui.main;
+package com.hrithik.hrithikadhikary.ui.utils;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -8,17 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.google.android.gms.ads.AdLoader;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.formats.UnifiedNativeAd;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -34,7 +28,6 @@ import com.hrithik.hrithikadhikary.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 import static android.view.View.GONE;
@@ -159,13 +152,16 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                         public void onDataChange(DataSnapshot dataSnapshot) {
 
                             User userComment = dataSnapshot.getValue(User.class);
-                            Picasso.get()
-                                    .load(userComment.getPhotoUrl())
-                                    .fit()
-                                    .centerCrop()
-                                    .into(holder.feedCommentDp);
 
-                            holder.feedCommentName.setText(userComment.getDisplayName());
+                            if (userComment != null) {
+                                Picasso.get()
+                                        .load(userComment.getPhotoUrl())
+                                        .fit()
+                                        .centerCrop()
+                                        .into(holder.feedCommentDp);
+
+                                holder.feedCommentName.setText(userComment.getDisplayName());
+                            }
                         }
 
                         @Override

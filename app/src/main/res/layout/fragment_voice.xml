@@ -39,8 +39,8 @@
             android:layout_marginLeft="12dp"
             android:padding="4dp"
             android:text="join"
-            android:textColor="#50FFFFFF"
-            android:backgroundTint="#191919"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="@color/purple_500"
             android:id="@+id/join"
             ></Button>
 

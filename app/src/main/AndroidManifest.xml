@@ -17,7 +17,7 @@
         <activity android:name=".JitsiActivity"></activity>
 
         <service
-            android:name=".ui.main.MyFirebaseMessagingService"
+            android:name=".ui.utils.MyFirebaseMessagingService"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

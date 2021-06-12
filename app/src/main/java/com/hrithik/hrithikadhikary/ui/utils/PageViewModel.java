@@ -1,4 +1,4 @@
-package com.hrithik.hrithikadhikary.ui.main;
+package com.hrithik.hrithikadhikary.ui.utils;
 
 import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;

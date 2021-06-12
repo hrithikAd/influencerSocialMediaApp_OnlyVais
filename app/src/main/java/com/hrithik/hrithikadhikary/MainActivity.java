@@ -30,7 +30,7 @@ import com.google.android.play.core.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.hrithik.hrithikadhikary.ui.main.SectionsPagerAdapter;
+import com.hrithik.hrithikadhikary.ui.utils.SectionsPagerAdapter;
 public class MainActivity extends AppCompatActivity    {
     FirebaseAuth Fauth;
     DatabaseReference databaseReference;

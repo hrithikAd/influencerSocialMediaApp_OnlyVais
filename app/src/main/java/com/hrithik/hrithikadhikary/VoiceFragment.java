@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,9 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.hrithik.hrithikadhikary.ui.main.GlobalSnackClass;
-import com.hrithik.hrithikadhikary.ui.main.MessageAdapter;
-import com.hrithik.hrithikadhikary.ui.main.VoiceAdapter;
+import com.hrithik.hrithikadhikary.ui.utils.VoiceAdapter;
 
 import java.util.ArrayList;
 
@@ -118,7 +115,7 @@ private Button joinButton;
     @Override
     public void onResume() {
 
-        deleteUserFirebase();
+       // deleteUserFirebase();
         super.onResume();
     }
 

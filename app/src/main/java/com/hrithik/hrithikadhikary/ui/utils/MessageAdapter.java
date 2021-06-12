@@ -1,46 +1,23 @@
-package com.hrithik.hrithikadhikary.ui.main;
+package com.hrithik.hrithikadhikary.ui.utils;
 
-import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.google.android.gms.ads.AdLoader;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.formats.UnifiedNativeAd;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.hrithik.hrithikadhikary.Comment;
-import com.hrithik.hrithikadhikary.CommentsActivity;
 import com.hrithik.hrithikadhikary.FriendlyMessage;
-import com.hrithik.hrithikadhikary.Post_item;
 import com.hrithik.hrithikadhikary.R;
-import com.hrithik.hrithikadhikary.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import static android.view.View.GONE;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ImageViewHolder> {
 
@@ -98,7 +75,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ImageVie
         public TextView mName;
         public ImageView mPhoto;
         public TextView mMessage;
-
 
         public ImageViewHolder(@NonNull View itemView) {
             super(itemView);

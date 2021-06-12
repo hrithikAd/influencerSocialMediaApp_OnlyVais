@@ -1,4 +1,4 @@
-package com.hrithik.hrithikadhikary.ui.main;
+package com.hrithik.hrithikadhikary.ui.utils;
 
 import android.content.Context;
 
@@ -10,17 +10,14 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.hrithik.hrithikadhikary.ChatFragment;
 import com.hrithik.hrithikadhikary.FeedFragment;
+import com.hrithik.hrithikadhikary.MembersFragment;
 import com.hrithik.hrithikadhikary.R;
 import com.hrithik.hrithikadhikary.VoiceFragment;
 
-/**
- * A [FragmentPagerAdapter] that returns a fragment corresponding to
- * one of the sections/tabs/pages.
- */
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @StringRes
-    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2, R.string.tab_text_3};
+    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2, R.string.tab_text_3,R.string.tab_text_4};
     private final Context mContext;
 
     public SectionsPagerAdapter(Context context, FragmentManager fm) {
@@ -45,6 +42,9 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             case 2:
                 fragment = new VoiceFragment();
                 break;
+
+            case 3:
+                fragment = new MembersFragment();
         }
         return fragment;
     }
@@ -58,6 +58,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         // Show 2 total pages.
-        return 3;
+        return 4;
     }
 }

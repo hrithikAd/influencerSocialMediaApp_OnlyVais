@@ -20,9 +20,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.hrithik.hrithikadhikary.ui.utils.ImageAdapter;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class Login extends AppCompatActivity {
@@ -32,13 +38,16 @@ public class Login extends AppCompatActivity {
     private int RC_SIGN_IN =1;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
+
+    private ArrayList<Role> mRoles;
+    private DatabaseReference mDatabaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
 
-
+        mRoles = new ArrayList<Role>();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
 
@@ -103,27 +112,21 @@ public class Login extends AppCompatActivity {
                             //   updateUI(user);
                             Toast.makeText(getApplicationContext(),"Successful",Toast.LENGTH_LONG);
 
-                            //upload user
-                            User userClass = new User(mAuth.getCurrentUser().getUid(),user.getDisplayName(),user.getPhotoUrl().toString());
+                            //upload
 
-                            mDatabase.child("Users").child(mAuth.getCurrentUser().getUid()).setValue(userClass).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()){
-                                        Toast.makeText(Login.this, "Welcome "+user.getDisplayName(), Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(Login.this, MainActivity.class);
-                                        startActivity(intent);
-                                        finish();
+                                User userClass = new User(mAuth.getCurrentUser().getUid(), user.getDisplayName(), user.getPhotoUrl().toString(), "member");
+                                mDatabase.child("Users").child(mAuth.getCurrentUser().getUid()).setValue(userClass).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(Login.this, "Welcome " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(Login.this, MainActivity.class);
+                                            startActivity(intent);
+                                            finish();
 
+                                        }
                                     }
-                                }
-                            });
-
-
-
-
-
-
+                                });
 
 
                         } else {

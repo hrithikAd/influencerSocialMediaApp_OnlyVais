@@ -1,4 +1,4 @@
-package com.hrithik.hrithikadhikary.ui.main
+package com.hrithik.hrithikadhikary.ui.utils
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

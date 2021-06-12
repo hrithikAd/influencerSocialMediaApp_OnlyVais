@@ -1,4 +1,4 @@
-package com.hrithik.hrithikadhikary.ui.main;
+package com.hrithik.hrithikadhikary.ui.utils;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -28,8 +28,6 @@ import com.hrithik.hrithikadhikary.CommentsActivity;
 import com.hrithik.hrithikadhikary.MainActivity;
 import com.hrithik.hrithikadhikary.R;
 import com.hrithik.hrithikadhikary.User;
-
-import org.w3c.dom.Comment;
 
 import java.util.ArrayList;
 import java.util.List;

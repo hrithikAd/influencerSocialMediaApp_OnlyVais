@@ -1,4 +1,4 @@
-package com.hrithik.hrithikadhikary.ui.main;
+package com.hrithik.hrithikadhikary.ui.utils;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,9 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.hrithik.hrithikadhikary.FriendlyMessage;
 import com.hrithik.hrithikadhikary.R;
 import com.hrithik.hrithikadhikary.User;
 import com.squareup.picasso.Picasso;
