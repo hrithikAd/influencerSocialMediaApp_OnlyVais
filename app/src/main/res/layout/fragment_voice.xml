@@ -42,6 +42,7 @@
             android:textColor="#FFFFFF"
             android:backgroundTint="@color/purple_500"
             android:id="@+id/join"
+            android:enabled="false"
             ></Button>
 
     </RelativeLayout>

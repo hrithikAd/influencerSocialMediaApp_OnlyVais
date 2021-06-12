@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hrithik.hrithikadhikary.ui.utils.MemberAdapter;
 import com.hrithik.hrithikadhikary.ui.utils.VoiceAdapter;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class MembersFragment extends Fragment {
 
     private DatabaseReference mDatabaseReference;
     private ArrayList<User> AdminList;
-    private VoiceAdapter voiceAdapter;
+    private MemberAdapter memberAdapter;
     private RecyclerView recyclerViewAdmin;
 
     private RecyclerView recyclerViewMod;
@@ -88,17 +89,17 @@ public class MembersFragment extends Fragment {
                 }
 
                 //admin
-                voiceAdapter = new VoiceAdapter(getContext(),AdminList);
-                recyclerViewAdmin.setAdapter(voiceAdapter);
+                memberAdapter = new MemberAdapter(getContext(),AdminList);
+                recyclerViewAdmin.setAdapter(memberAdapter);
 
 
                 //mod
-                voiceAdapter = new VoiceAdapter(getContext(),ModList);
-                recyclerViewMod.setAdapter(voiceAdapter);
+                memberAdapter = new MemberAdapter(getContext(),ModList);
+                recyclerViewMod.setAdapter(memberAdapter);
 
                 //member
-                voiceAdapter = new VoiceAdapter(getContext(),MemberList);
-                recyclerViewMember.setAdapter(voiceAdapter);
+                memberAdapter = new MemberAdapter(getContext(),MemberList);
+                recyclerViewMember.setAdapter(memberAdapter);
             }
 
             @Override

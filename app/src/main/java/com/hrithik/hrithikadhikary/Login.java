@@ -15,6 +15,7 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseError;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -112,21 +113,48 @@ public class Login extends AppCompatActivity {
                             //   updateUI(user);
                             Toast.makeText(getApplicationContext(),"Successful",Toast.LENGTH_LONG);
 
-                            //upload
 
-                                User userClass = new User(mAuth.getCurrentUser().getUid(), user.getDisplayName(), user.getPhotoUrl().toString(), "member");
-                                mDatabase.child("Users").child(mAuth.getCurrentUser().getUid()).setValue(userClass).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Toast.makeText(Login.this, "Welcome " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(Login.this, MainActivity.class);
-                                            startActivity(intent);
-                                            finish();
+                            //check if user present in UserList
+                            DatabaseReference firebaseRef = FirebaseDatabase.getInstance().getReference("Users");
+                            firebaseRef.orderByKey().equalTo(user.getUid()).addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                        }
+                                    if(dataSnapshot.exists()) {
+                                        //Key exists
+                                        Toast.makeText(Login.this, "Welcome back " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(Login.this, MainActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    } else {
+                                        //Key does not exist
+                                        //upload
+                                        User userClass = new User(mAuth.getCurrentUser().getUid(), user.getDisplayName(), user.getPhotoUrl().toString(), "member");
+
+                                        mDatabase.child("Users").child(mAuth.getCurrentUser().getUid()).setValue(userClass).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Toast.makeText(Login.this, "Welcome " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
+                                                    Intent intent = new Intent(Login.this, MainActivity.class);
+                                                    startActivity(intent);
+                                                    finish();
+
+                                                }
+                                            }
+                                        });
+
                                     }
-                                });
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+
+
 
 
                         } else {
@@ -137,7 +165,6 @@ public class Login extends AppCompatActivity {
                     }
                 });
     }
-
 
 
 }

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hrithik.hrithikadhikary.ui.utils.CommentAdapter;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +33,7 @@ public class CommentsActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private CommentAdapter commentAdapter;
     private List<Comment> commentList;
-
+    private DatabaseReference mDatabaseReference;
     EditText addcomment;
     ImageView image_profile,fullImage;
     TextView post,fullTweet;
@@ -68,6 +70,40 @@ public class CommentsActivity extends AppCompatActivity {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
 
+
+        //userId
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                User thisUser = snapshot.getValue(User.class);
+
+                if(thisUser.getRole().contains("commentMute")){
+
+                    Toast.makeText(CommentsActivity.this,"You are temporarily muted by mods!!",Toast.LENGTH_LONG).show();
+                    post.setEnabled(false);
+                }
+
+
+                else{
+
+
+                    post.setEnabled(true);
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(CommentsActivity.this,"Firebase Error",Toast.LENGTH_LONG).show();
+            }
+        });
+
+        //end
+        //end
+
         post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,6 +114,9 @@ public class CommentsActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+
 
         getImage();
         readComments();

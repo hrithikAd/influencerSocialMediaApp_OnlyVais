@@ -146,7 +146,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ImageVie
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
+                //bug
                 Glide.with(mContext).load(user.getPhotoUrl()).into(imageView);
+                //bug
                 username.setText(user.getDisplayName());
             }
 

@@ -61,7 +61,6 @@ public class VoiceAdapter extends RecyclerView.Adapter<VoiceAdapter.VoiceViewHol
            super(itemView);
            name=itemView.findViewById(R.id.nameTextViewVoice);
            profileDP = itemView.findViewById(R.id.photoImageViewVoice);
-
        }
    }
 

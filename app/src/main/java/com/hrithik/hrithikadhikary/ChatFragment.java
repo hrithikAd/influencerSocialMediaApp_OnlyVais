@@ -51,6 +51,8 @@ public class ChatFragment extends Fragment {
     //Firebase stuff
     private FirebaseDatabase mFireBaseDatabase;
     private DatabaseReference mMessageDataBaseReference;
+    private DatabaseReference mDatabaseReference2;
+
     private ChildEventListener mChildEventListener;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -65,6 +67,7 @@ public class ChatFragment extends Fragment {
     private LinearLayoutManager mManager;
     private ArrayList<FriendlyMessage> friendlyMessages;
 
+    Boolean blockedUser=false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -100,7 +103,7 @@ public class ChatFragment extends Fragment {
         mProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
         //current user
-        FirebaseUser currentUser = mFirebaseAuth.getCurrentUser();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
 
         //scroll msgs
@@ -109,6 +112,39 @@ public class ChatFragment extends Fragment {
         mLayoutManager.setStackFromEnd(true);
         //end
 
+
+
+
+
+
+        //modCheck
+        mDatabaseReference2 = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
+        mDatabaseReference2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                User thisUser = snapshot.getValue(User.class);
+
+                if(thisUser.getRole().contains("chatMute")){
+
+                    Toast.makeText(getContext(),"You are temporarily muted by mods!!",Toast.LENGTH_LONG).show();
+                    mSendButton.setEnabled(false);
+                    blockedUser=true;
+                }
+
+
+                else{
+                    mSendButton.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(),"Firebase Error",Toast.LENGTH_LONG).show();
+            }
+        });
+
+        //end
 
         // Enable Send button when there's text to send
         mMessageEditText.addTextChangedListener(new TextWatcher() {
@@ -119,9 +155,12 @@ public class ChatFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.toString().trim().length() > 0) {
-                    mSendButton.setEnabled(true);
+                    if(blockedUser==false) {
+                        mSendButton.setEnabled(true);
+                    }
                 } else {
                     mSendButton.setEnabled(false);
+
                 }
             }
 
@@ -130,6 +169,7 @@ public class ChatFragment extends Fragment {
             }
         });
         mMessageEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(DEFAULT_MSG_LENGTH_LIMIT)});
+
 
         // Send button sends a message and clears the EditText
         mSendButton.setOnClickListener(new View.OnClickListener() {
@@ -141,8 +181,11 @@ public class ChatFragment extends Fragment {
                 mMessageDataBaseReference.push().setValue(friendlyMessage);
                 // Clear input box
                 mMessageEditText.setText("");
+
+
             }
         });
+
 
 
 

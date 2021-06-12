@@ -31,11 +31,14 @@ public class VoiceFragment extends Fragment  {
 
 private FirebaseAuth mAuth;
 private DatabaseReference mDatabaseReference;
+
+    private DatabaseReference mDatabaseReference2;
 private ArrayList<User> voiceMember;
 private VoiceAdapter voiceAdapter;
 private RecyclerView recyclerView;
 private ImageView voiceLogoView;
 private Button joinButton;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,6 +86,39 @@ private Button joinButton;
         });
 
         //end
+
+
+
+        //mod check
+        mDatabaseReference2 = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
+        mDatabaseReference2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                User thisUser = snapshot.getValue(User.class);
+
+                if(thisUser.getRole().contains("vcMute")){
+
+                    Toast.makeText(getContext(),"You are temporarily muted by mods!!",Toast.LENGTH_LONG).show();
+                    joinButton.setEnabled(false);
+                }
+
+
+                else{
+
+                    joinButton.setEnabled(true);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(),"Firebase Error",Toast.LENGTH_LONG).show();
+            }
+        });
+
+        //end
+
 
 
         joinButton.setOnClickListener(new View.OnClickListener() {

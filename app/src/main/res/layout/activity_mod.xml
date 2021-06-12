@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ModActivity">
+
+    <com.google.android.material.card.MaterialCardView android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_margin="8dp"
+        app:cardBackgroundColor="@color/greyBackground"
+        android:id="@+id/card"
+        >
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:orientation="vertical"
+            android:padding="6dp"
+            >
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/modUserPic"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@mipmap/ic_launcher"/>
+
+            <TextView
+                android:textSize="16sp"
+                android:id="@+id/modUserName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:layout_toRightOf="@id/modUserPic"
+                android:layout_marginLeft="10dp"
+                android:textColor="#FFFFFF"
+                android:layout_centerVertical="true"
+                tools:text="Name"
+                />
+
+            <TextView
+                android:textSize="16sp"
+                android:id="@+id/modUserStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:layout_marginLeft="10dp"
+                android:textColor="#ff0000"
+                android:layout_centerVertical="true"
+                tools:text="Status"
+                android:textStyle="bold"
+                android:layout_alignParentRight="true"
+                />
+
+        </RelativeLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Comment Mute"
+        android:id="@+id/modCommentMute"
+        android:layout_below="@+id/card"
+        android:layout_marginLeft="8dp"
+        >
+    </Button>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chat Mute"
+        android:id="@+id/modChatMute"
+        android:layout_below="@+id/modCommentMute"
+        android:layout_marginLeft="8dp"
+        >
+    </Button>
+
+
+    <Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="VC Mute"
+    android:id="@+id/modVoiceMute"
+    android:layout_below="@+id/modChatMute"
+    android:layout_marginLeft="8dp"
+    >
+</Button>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UnMute"
+        android:id="@+id/modUnmute"
+        android:layout_below="@+id/modVoiceMute"
+        android:layout_marginLeft="8dp"
+        android:backgroundTint="@color/purple_500"
+        >
+    </Button>
+
+</RelativeLayout>
