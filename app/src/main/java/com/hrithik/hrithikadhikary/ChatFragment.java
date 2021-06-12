@@ -1,15 +1,24 @@
 package com.hrithik.hrithikadhikary;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,7 +84,8 @@ public class ChatFragment extends Fragment {
         View RootView = inflater.inflate(R.layout.fragment_chat, container, false);
 
 
-
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver,
+                new IntentFilter("custom-message"));
 
 
                 recyclerView = (RecyclerView) RootView.findViewById(R.id.messageRecycler);
@@ -160,7 +170,6 @@ public class ChatFragment extends Fragment {
                     }
                 } else {
                     mSendButton.setEnabled(false);
-
                 }
             }
 
@@ -229,6 +238,21 @@ public class ChatFragment extends Fragment {
 
     }
 
+    public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            String ChatName = intent.getStringExtra("Chatname");
 
+            Spannable WordtoSpan = new SpannableString("@"+ChatName+" ");
+            WordtoSpan.setSpan(new ForegroundColorSpan(Color.YELLOW), 0, WordtoSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+
+            mMessageEditText.setText(WordtoSpan);
+            mMessageEditText.setSelection(mMessageEditText.getText().length());
+
+
+        }
+    };
 
 }

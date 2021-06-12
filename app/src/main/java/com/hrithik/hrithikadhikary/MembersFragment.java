@@ -37,6 +37,9 @@ public class MembersFragment extends Fragment {
     private RecyclerView recyclerViewMember;
     private ArrayList<User> MemberList;
 
+    private RecyclerView recyclerViewMute;
+    private ArrayList<User> MuteList;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,6 +71,15 @@ public class MembersFragment extends Fragment {
         MemberList = new ArrayList<>();
         recyclerViewMember.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        //mute
+        recyclerViewMute = RootView.findViewById(R.id.muteRecycler);
+        recyclerViewMute.setHasFixedSize(true);
+        recyclerViewMute.setLayoutManager(new LinearLayoutManager(getContext()));
+        MuteList = new ArrayList<>();
+        recyclerViewMute.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
+
         //admin recycler
 
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
@@ -75,6 +87,10 @@ public class MembersFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 AdminList.clear();
+                ModList.clear();
+                MemberList.clear();
+                MuteList.clear();
+
                 for(DataSnapshot postSnap : snapshot.getChildren()){
                     User member = postSnap.getValue(User.class);
                     if(member.getRole().equalsIgnoreCase("admin")) {
@@ -83,8 +99,11 @@ public class MembersFragment extends Fragment {
                     else if(member.getRole().equalsIgnoreCase("mod")){
                         ModList.add(member);
                     }
-                    else{
+                    else if(member.getRole().equalsIgnoreCase("member")){
                         MemberList.add(member);
+                    }
+                    else{
+                        MuteList.add(member);
                     }
                 }
 
@@ -100,6 +119,10 @@ public class MembersFragment extends Fragment {
                 //member
                 memberAdapter = new MemberAdapter(getContext(),MemberList);
                 recyclerViewMember.setAdapter(memberAdapter);
+
+                //mute
+                memberAdapter = new MemberAdapter(getContext(),MuteList);
+                recyclerViewMute.setAdapter(memberAdapter);
             }
 
             @Override

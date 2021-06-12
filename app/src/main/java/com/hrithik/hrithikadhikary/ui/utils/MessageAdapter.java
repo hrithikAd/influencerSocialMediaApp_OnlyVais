@@ -1,6 +1,7 @@
 package com.hrithik.hrithikadhikary.ui.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -51,6 +53,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ImageVie
                 .error(mContext.getResources().getDrawable(R.drawable.darkbackground))
                 .into(holder.mPhoto);
 
+        //name color
+        //end
+
+
 
         //on click name
         holder.mName.setOnClickListener(new View.OnClickListener() {
@@ -58,7 +64,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ImageVie
             public void onClick(View v) {
                 String currentName = postCurrent.getName();
                 //Toast.makeText(mContext,currentName,Toast.LENGTH_SHORT).show();
-
+                Intent intent = new Intent("custom-message");
+                //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
+                intent.putExtra("Chatname",currentName);
+                LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
             }
         });
 

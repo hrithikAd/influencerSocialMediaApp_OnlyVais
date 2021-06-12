@@ -3,6 +3,7 @@ package com.hrithik.hrithikadhikary.ui.utils;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,7 +54,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
-
+        holder.like_btm.setColorFilter(Color.RED);
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         Post_item postCurrent = mPosts.get(position);
         holder.timeView.setText(postCurrent.getdate());
@@ -252,6 +253,11 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                 if (holder.like_btm.getTag().equals("like")) {
                     FirebaseDatabase.getInstance().getReference().child("Likes").child(postCurrent.getpost_id())
                             .child(firebaseUser.getUid()).setValue(true);
+
+                    //test
+
+
+
                 } else {
                     FirebaseDatabase.getInstance().getReference().child("Likes").child(postCurrent.getpost_id())
                             .child(firebaseUser.getUid()).removeValue();

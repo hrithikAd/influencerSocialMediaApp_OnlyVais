@@ -31,8 +31,9 @@ public class VoiceFragment extends Fragment  {
 
 private FirebaseAuth mAuth;
 private DatabaseReference mDatabaseReference;
+private DatabaseReference mDatabaseReferenceMod;
 
-    private DatabaseReference mDatabaseReference2;
+
 private ArrayList<User> voiceMember;
 private VoiceAdapter voiceAdapter;
 private RecyclerView recyclerView;
@@ -40,30 +41,68 @@ private ImageView voiceLogoView;
 private Button joinButton;
 
 
+    private ArrayList<User> voiceMember2;
+    private VoiceAdapter voiceAdapter2;
+    private RecyclerView recyclerView2;
+    private ImageView voiceLogoView2;
+    private Button joinButton2;
+    private DatabaseReference mDatabaseReference2;
+
+    private ArrayList<User> voiceMember3;
+    private VoiceAdapter voiceAdapter3;
+    private RecyclerView recyclerView3;
+    private ImageView voiceLogoView3;
+    private Button joinButton3;
+    private DatabaseReference mDatabaseReference3;
+
+
+    private DatabaseReference mDatabaseReferenceSquad;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View RootView = inflater.inflate(R.layout.fragment_voice, container, false);
 
 
-        voiceLogoView = RootView.findViewById(R.id.voiceLogo);
+
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
+        voiceLogoView = RootView.findViewById(R.id.voiceLogo);
         recyclerView = RootView.findViewById(R.id.voiceRecycler);
-
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("voice");
-
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         voiceMember = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
         joinButton = RootView.findViewById(R.id.join);
-        //read voice member
 
+
+
+        //2
+        voiceLogoView2 = RootView.findViewById(R.id.voiceLogo2);
+        recyclerView2 = RootView.findViewById(R.id.voiceRecycler2);
+        mDatabaseReference2 = FirebaseDatabase.getInstance().getReference("voice2");
+        recyclerView2.setHasFixedSize(true);
+        recyclerView2.setLayoutManager(new LinearLayoutManager(getContext()));
+        voiceMember2 = new ArrayList<>();
+        recyclerView2.setLayoutManager(new LinearLayoutManager(getContext()));
+        joinButton2 = RootView.findViewById(R.id.join2);
+
+
+        //3
+        voiceLogoView3 = RootView.findViewById(R.id.voiceLogo3);
+        recyclerView3 = RootView.findViewById(R.id.voiceRecycler3);
+        mDatabaseReference3 = FirebaseDatabase.getInstance().getReference("voice3");
+        recyclerView3.setHasFixedSize(true);
+        recyclerView3.setLayoutManager(new LinearLayoutManager(getContext()));
+        voiceMember3 = new ArrayList<>();
+        recyclerView3.setLayoutManager(new LinearLayoutManager(getContext()));
+        joinButton3 = RootView.findViewById(R.id.join3);
+
+
+
+
+        //read voice member 1
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -87,28 +126,45 @@ private Button joinButton;
 
         //end
 
-
-
-        //mod check
-        mDatabaseReference2 = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
+        //read voice member 2
         mDatabaseReference2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                User thisUser = snapshot.getValue(User.class);
-
-                if(thisUser.getRole().contains("vcMute")){
-
-                    Toast.makeText(getContext(),"You are temporarily muted by mods!!",Toast.LENGTH_LONG).show();
-                    joinButton.setEnabled(false);
+                voiceMember2.clear();
+                for(DataSnapshot postSnap : snapshot.getChildren()){
+                    User member = postSnap.getValue(User.class);
+                    voiceMember2.add(member);
                 }
 
+                voiceAdapter2 = new VoiceAdapter(getContext(),voiceMember2);
+                recyclerView2.setAdapter(voiceAdapter2);
 
-                else{
+            }
 
-                    joinButton.setEnabled(true);
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(),"Firebase Error",Toast.LENGTH_LONG).show();
+            }
+        });
 
+        //end
+
+
+//read voice member 3
+        mDatabaseReference3.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                voiceMember3.clear();
+                for(DataSnapshot postSnap : snapshot.getChildren()){
+                    User member = postSnap.getValue(User.class);
+                    voiceMember3.add(member);
                 }
+
+                voiceAdapter3 = new VoiceAdapter(getContext(),voiceMember3);
+                recyclerView3.setAdapter(voiceAdapter3);
+
             }
 
             @Override
@@ -121,21 +177,114 @@ private Button joinButton;
 
 
 
+        //mod check
+        mDatabaseReferenceMod = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
+        mDatabaseReferenceMod.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                User thisUser = snapshot.getValue(User.class);
+
+                if(thisUser.getRole().contains("vcMute")){
+
+                    Toast.makeText(getContext(),"You are temporarily muted by mods!!",Toast.LENGTH_LONG).show();
+                    joinButton.setEnabled(false);
+                    joinButton2.setEnabled(false);
+                    joinButton3.setEnabled(false);
+                }
+
+
+                else{
+
+                    joinButton.setEnabled(true);
+                    joinButton2.setEnabled(true);
+                }
+
+
+                //mod only channel
+                if(thisUser.getRole().contains("mod") || thisUser.getRole().contains("admin")){
+
+                    joinButton3.setEnabled(true);
+                }
+                else{
+
+                    joinButton3.setEnabled(false);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(),"Firebase Error",Toast.LENGTH_LONG).show();
+            }
+        });
+
+        //end
+
+
+        //squad check!!
+        mDatabaseReferenceSquad = FirebaseDatabase.getInstance().getReference("voice2");
+        mDatabaseReferenceSquad.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                int count = ((int) snapshot.getChildrenCount());
+
+                if(count>=4){
+                    joinButton2.setEnabled(false);
+                }
+                else{
+                    joinButton2.setEnabled(true);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(),"Firebase Error",Toast.LENGTH_LONG).show();
+            }
+        });
+//end
+
+
+
+
         joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              Intent intent = new Intent(getActivity(), JitsiActivity.class);
+
+
+
+
+                Intent intent = new Intent(getActivity(), JitsiActivity.class);
+                intent.putExtra("channel", "1");
+                startActivity(intent);
+            }
+        });
+
+        joinButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), JitsiActivity.class);
+                intent.putExtra("channel", "2");
+                startActivity(intent);
+            }
+        });
+
+        joinButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), JitsiActivity.class);
+                intent.putExtra("channel", "3");
                 startActivity(intent);
             }
         });
 
 
 
+
+
         return RootView;
-
-
-
-
     }
 
 

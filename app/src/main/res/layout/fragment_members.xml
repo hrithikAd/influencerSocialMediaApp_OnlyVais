@@ -9,9 +9,9 @@
    <TextView
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:text="Admin"
-       android:textColor="@color/purple_700"
-       android:textSize="27sp"
+       android:text="╭───𒌋𒀖「Admin」"
+       android:textColor="#FF7597"
+       android:textSize="20sp"
        android:id="@+id/adminText"
        android:layout_margin="8dp"
        >
@@ -29,9 +29,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mod"
-        android:textColor="@color/purple_500"
-        android:textSize="27sp"
+        android:text="╭───𒌋𒀖「Mod」"
+        android:textColor="#03DAC5"
+        android:textSize="20sp"
         android:layout_margin="8dp"
         android:id="@+id/modText"
         android:layout_below="@+id/adminRecycler">
@@ -48,13 +48,12 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Member"
+        android:text="╭───𒌋𒀖「Member」"
         android:textColor="@color/purple_200"
-        android:textSize="27sp"
+        android:textSize="20sp"
         android:layout_margin="8dp"
         android:id="@+id/memberText"
         android:layout_below="@id/modRecycler"></TextView>
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
@@ -63,5 +62,26 @@
         android:layout_below="@id/memberText"
         android:layout_marginLeft="8dp"
         ></androidx.recyclerview.widget.RecyclerView>
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="╭───𒌋𒀖「Mute」"
+        android:textColor="@color/purple_500"
+        android:textSize="20sp"
+        android:layout_margin="8dp"
+        android:id="@+id/muteText"
+        android:layout_below="@id/memberRecycler"></TextView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/muteRecycler"
+        android:layout_below="@id/muteText"
+        android:layout_marginLeft="8dp"
+        ></androidx.recyclerview.widget.RecyclerView>
+
 
 </RelativeLayout>

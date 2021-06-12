@@ -26,6 +26,10 @@ public class JitsiActivity extends AppCompatActivity implements JitsiMeetActivit
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabaseReference;
     private JitsiMeetView view;
+    private String channel;
+
+    public JitsiActivity() {
+    }
 
     @Override
     protected void onActivityResult(
@@ -45,6 +49,12 @@ public class JitsiActivity extends AppCompatActivity implements JitsiMeetActivit
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        Intent intent = getIntent();
+        channel = intent.getExtras().getString("channel");
+
+
 
         view = new JitsiMeetView(this);
         JitsiMeetConferenceOptions options = getOptions();
@@ -125,9 +135,10 @@ public class JitsiActivity extends AppCompatActivity implements JitsiMeetActivit
 
 
         return  new JitsiMeetConferenceOptions.Builder()
-                .setRoom("OnlyVaisGeneral")
+                .setRoom("onlyvais"+channel)
                 .setAudioMuted(true)
                 .setVideoMuted(true)
+                .setAudioOnly(false)
                 .setFeatureFlag("meeting-password.enabled", false)
                 .setFeatureFlag("live-streaming.enabled", false)
                 .setFeatureFlag("tile-view.enabled", true)
@@ -164,7 +175,7 @@ public class JitsiActivity extends AppCompatActivity implements JitsiMeetActivit
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference().child("voice");
+        DatabaseReference myRef = database.getReference().child("voice"+channel);
         User voiceProfile = new User(currentUser.getUid(),currentUser.getDisplayName(),currentUser.getPhotoUrl().toString(),"");
         myRef.child(currentUser.getUid()).setValue(voiceProfile);
     }
@@ -177,7 +188,7 @@ public class JitsiActivity extends AppCompatActivity implements JitsiMeetActivit
         DatabaseReference ref;
 
         ref = FirebaseDatabase.getInstance().getReference()
-                .child("voice").child(currentUser.getUid());
+                .child("voice"+channel).child(currentUser.getUid());
         ref.removeValue();
 
 

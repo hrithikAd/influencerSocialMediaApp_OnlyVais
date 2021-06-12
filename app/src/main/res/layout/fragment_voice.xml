@@ -14,8 +14,8 @@
         >
 
         <ImageView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:src="@drawable/ic_voice"
             android:layout_margin="8dp"
             android:id="@+id/voiceLogo"
@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/voiceLogo"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:text="GENERAL CHAT"
             android:textColor="@color/white"
             android:layout_centerVertical="true"
@@ -43,6 +43,7 @@
             android:backgroundTint="@color/purple_500"
             android:id="@+id/join"
             android:enabled="false"
+            android:minHeight="0dp"
             ></Button>
 
     </RelativeLayout>
@@ -50,14 +51,152 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/voiceRecycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/voiceLayout"
-        tools:listitem="@layout/voice_item"
         android:layout_marginTop="-6dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
 
     </androidx.recyclerview.widget.RecyclerView>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/voiceLayout2"
+        android:layout_below="@id/voiceRecycler"
+        >
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_voice"
+            android:layout_margin="8dp"
+            android:id="@+id/voiceLogo2"
+            ></ImageView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/voiceLogo2"
+            android:textSize="20sp"
+            android:text="SQUAD CHAT"
+            android:textColor="@color/white"
+            android:layout_centerVertical="true"
+            android:id="@+id/voiceText2"
+            ></TextView>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/voiceText2"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"
+            android:padding="4dp"
+            android:text="join"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="@color/purple_500"
+            android:id="@+id/join2"
+            android:enabled="false"
+            android:minHeight="0dp"
+            ></Button>
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/voiceRecycler2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/voiceLayout2"
+        android:layout_marginTop="-6dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/voiceLayout3"
+        android:layout_below="@id/voiceRecycler2"
+        >
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_voice"
+            android:layout_margin="8dp"
+            android:id="@+id/voiceLogo3"
+            ></ImageView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/voiceLogo3"
+            android:textSize="20sp"
+            android:text="MOD ONLY"
+            android:textColor="@color/white"
+            android:layout_centerVertical="true"
+            android:id="@+id/voiceText3"
+            ></TextView>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/voiceText3"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"
+            android:padding="4dp"
+            android:text="join"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="@color/purple_500"
+            android:id="@+id/join3"
+            android:enabled="false"
+            android:minHeight="0dp"
+            ></Button>
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/voiceRecycler3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/voiceLayout3"
+        android:layout_marginTop="-6dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 </RelativeLayout>

@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity    {
 
 
 
-        FirebaseMessaging.getInstance().subscribeToTopic("/topics/HrithikAdhikary");
+        FirebaseMessaging.getInstance().subscribeToTopic("/topics/onlyvais");
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
@@ -97,8 +97,11 @@ public class MainActivity extends AppCompatActivity    {
                 if (Fauth.getCurrentUser() != null) {
 
 
+                    FirebaseMessaging.getInstance().subscribeToTopic("/topics/"+Fauth.getCurrentUser().getUid());
+
 
                 } else {
+
                     Intent intent = new Intent(MainActivity.this, Login.class);
                     startActivity(intent);
                     finish();

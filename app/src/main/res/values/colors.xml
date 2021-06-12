@@ -9,4 +9,10 @@
     <color name="background">#121212</color>
     <color name="greyBackground">#292929</color>
     <color name="white">#FFFFFFFF</color>
+
+
+    <color name="memberColor">#FFBB86FC</color>
+    <color name="modColor">#03DAC5</color>
+    <color name="admin">#FF7597</color>
+
 </resources>
