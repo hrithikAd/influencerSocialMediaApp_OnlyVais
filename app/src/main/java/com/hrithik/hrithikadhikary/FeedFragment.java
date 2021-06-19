@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +42,8 @@ public class FeedFragment extends Fragment {
     private FriendlyMessage msg;
     private ViewPager viewPager;
 
+    private ProgressBar mProgressbar;
+
     private int DELAY = 5000; // Delay time in milliseconds
 
     @Override
@@ -49,9 +52,19 @@ public class FeedFragment extends Fragment {
 
         View RootView = inflater.inflate(R.layout.fragment_feed, container, false);
 
+        mProgressbar = RootView.findViewById(R.id.progressbarFeed);
+
         mRecyclerView = (RecyclerView) RootView.findViewById(R.id.recycler_view);
         mRecyclerView.hasFixedSize();
+
+
+        //cache
+        mRecyclerView.setItemViewCacheSize(20);
+        mRecyclerView.setDrawingCacheEnabled(true);
+        mRecyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        //end
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setVisibility(GONE);
 
         mPosts = new ArrayList<>();
 
@@ -145,7 +158,8 @@ public class FeedFragment extends Fragment {
                 mImageAdapter = new ImageAdapter(getContext(),mPosts);
 
                 mRecyclerView.setAdapter(mImageAdapter);
-
+                mRecyclerView.setVisibility(View.VISIBLE);
+                mProgressbar.setVisibility(GONE);
             }
 
             @Override

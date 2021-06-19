@@ -8,6 +8,12 @@
     android:background="@color/background"
     >
 
+    <ProgressBar
+        android:id="@+id/progressbarFeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"

@@ -1,6 +1,8 @@
 package com.hrithik.hrithikadhikary;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -98,6 +101,18 @@ private Button joinButton;
         voiceMember3 = new ArrayList<>();
         recyclerView3.setLayoutManager(new LinearLayoutManager(getContext()));
         joinButton3 = RootView.findViewById(R.id.join3);
+
+
+
+        //permission
+        String[] PERMISSIONS = {
+                Manifest.permission.RECORD_AUDIO,
+                android.Manifest.permission.CAMERA
+        };
+
+        ActivityCompat.requestPermissions(getActivity(),PERMISSIONS,1);
+
+
 
 
 
@@ -319,6 +334,8 @@ private Button joinButton;
 
 
     }
+
+
 
 
 }

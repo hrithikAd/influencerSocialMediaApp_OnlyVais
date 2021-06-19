@@ -14,15 +14,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/LayoutName">
+
         <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/profile_image"
             android:layout_width="66dp"
             android:layout_height="66dp"
             android:src="@drawable/profilepic"
-            app:civ_border_width="2dp"
             app:civ_border_color="#FF000000"
-            />
+            app:civ_border_width="2dp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -82,10 +82,53 @@
         android:id="@+id/play"
         android:visibility="gone"
         ></ImageView>
-
-
-
 </RelativeLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+            android:id="@+id/youtube_player_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:autoPlay="false"
+            app:showFullScreenButton="false"
+            android:visibility="gone"
+            android:layout_below="@id/photo_layout"
+            app:enableAutomaticInitialization="false"
+            />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -93,7 +136,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:id="@+id/LikeLayout"
-    android:layout_below="@id/photo_layout">
+    android:layout_below="@id/youtube_player_view">
 
     <ImageView
         android:layout_width="40dp"

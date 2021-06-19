@@ -1,8 +1,17 @@
 package com.hrithik.hrithikadhikary;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.facebook.react.modules.core.PermissionListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,6 +29,8 @@ import org.jitsi.meet.sdk.JitsiMeetViewListener;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
+
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class JitsiActivity extends AppCompatActivity implements JitsiMeetActivityInterface, JitsiMeetViewListener {
 
@@ -50,7 +61,7 @@ public class JitsiActivity extends AppCompatActivity implements JitsiMeetActivit
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        
         Intent intent = getIntent();
         channel = intent.getExtras().getString("channel");
 
@@ -102,10 +113,71 @@ public class JitsiActivity extends AppCompatActivity implements JitsiMeetActivit
         JitsiMeetActivityDelegate.onHostPause(this);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //permission
+
+
+
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
-    public void requestPermissions(String[] strings, int i, PermissionListener permissionListener) {
+    public void requestPermissions(String[] permissions, int requestCode, PermissionListener listener) {
+
+        String[] PERMISSIONS = {
+                Manifest.permission.RECORD_AUDIO,
+                android.Manifest.permission.CAMERA
+        };
+
+        this.requestPermissions(permissions,requestCode);
+
+        if(!hasPermissions( PERMISSIONS)){
+            ActivityCompat.requestPermissions(this, PERMISSIONS, 1);
+        }
 
     }
+    public boolean hasPermissions(String... permissions) {
+        if ( permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
+
+//end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     protected JitsiMeetConferenceOptions getOptions(){
         URL serverURL;
@@ -136,9 +208,8 @@ public class JitsiActivity extends AppCompatActivity implements JitsiMeetActivit
 
         return  new JitsiMeetConferenceOptions.Builder()
                 .setRoom("onlyvais"+channel)
-                .setAudioMuted(true)
                 .setVideoMuted(true)
-                .setAudioOnly(false)
+                .setAudioMuted(true)
                 .setFeatureFlag("meeting-password.enabled", false)
                 .setFeatureFlag("live-streaming.enabled", false)
                 .setFeatureFlag("tile-view.enabled", true)

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,8 +36,7 @@ public class MainActivity extends AppCompatActivity    {
     FirebaseAuth Fauth;
     DatabaseReference databaseReference;
     private AppUpdateManager appUpdateManager;
-
-    private static final int RC_APP_UPDATE = 100;
+    private static final int IMMEDIATE_APP_UPDATE_REQ_CODE = 124;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity    {
 
 
 
-        FirebaseMessaging.getInstance().subscribeToTopic("/topics/onlyvais");
+        FirebaseMessaging.getInstance().subscribeToTopic("/topics/HrithikAdhikary");
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
@@ -58,7 +58,8 @@ public class MainActivity extends AppCompatActivity    {
 
         if (isOnline()) {
 
-            inAppUpdate();
+            appUpdateManager = AppUpdateManagerFactory.create(getApplicationContext());
+            checkUpdate();
 
             load();
         } else {
@@ -136,66 +137,57 @@ public class MainActivity extends AppCompatActivity    {
     }
 
 
-    //inAPP update
-    private void inAppUpdate() {
-        // Creates instance of the manager.
-        appUpdateManager = AppUpdateManagerFactory.create(this);
 
-        // Returns an intent object that you use to check for an update.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //inAPP update
+    private void checkUpdate() {
+
         Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
 
-        // Checks that the platform will allow the specified type of update.
-        appUpdateInfoTask.addOnSuccessListener(new OnSuccessListener<AppUpdateInfo>() {
-            @Override
-            public void onSuccess(AppUpdateInfo appUpdateInfo) {
-
-                Log.e("AVAILABLE_VERSION_CODE", appUpdateInfo.availableVersionCode()+"");
-                if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                        // For a flexible update, use AppUpdateType.FLEXIBLE
-                        && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
-                    // Request the update.
-
-                    try {
-                        appUpdateManager.startUpdateFlowForResult(
-                                // Pass the intent that is returned by 'getAppUpdateInfo()'.
-                                appUpdateInfo,
-                                // Or 'AppUpdateType.FLEXIBLE' for flexible updates.
-                                AppUpdateType.IMMEDIATE,
-                                // The current activity making the update request.
-                                MainActivity.this,
-                                // Include a request code to later monitor this update request.
-                                RC_APP_UPDATE);
-                    } catch (IntentSender.SendIntentException ignored) {
-
-                    }
-                }
+        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                startUpdateFlow(appUpdateInfo);
+            } else if  (appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS){
+                startUpdateFlow(appUpdateInfo);
             }
         });
-
-        appUpdateManager.registerListener(installStateUpdatedListener);
-
     }
-    //lambda operation used for below listener
-    InstallStateUpdatedListener installStateUpdatedListener = installState -> {
-        if (installState.installStatus() == InstallStatus.DOWNLOADED) {
-            popupSnackbarForCompleteUpdate();
-        } else
-            Log.e("UPDATE", "Not downloaded yet");
-    };
 
+    private void startUpdateFlow(AppUpdateInfo appUpdateInfo) {
+        try {
+            appUpdateManager.startUpdateFlowForResult(appUpdateInfo, AppUpdateType.IMMEDIATE, this, IMMEDIATE_APP_UPDATE_REQ_CODE);
+        } catch (IntentSender.SendIntentException e) {
+            e.printStackTrace();
+        }
+    }
 
-    private void popupSnackbarForCompleteUpdate() {
-
-        Snackbar snackbar =
-                Snackbar.make(
-                        findViewById(android.R.id.content),
-                        "Update almost finished!",
-                        Snackbar.LENGTH_INDEFINITE);
-        //lambda operation used for below action
-        snackbar.setAction("Restart", view ->
-                appUpdateManager.completeUpdate());
-        snackbar.setActionTextColor(getResources().getColor(R.color.purple_700));
-        snackbar.show();
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == IMMEDIATE_APP_UPDATE_REQ_CODE) {
+            if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(getApplicationContext(), "Update canceled by user! Result Code: " + resultCode, Toast.LENGTH_LONG).show();
+            } else if (resultCode == RESULT_OK) {
+                Toast.makeText(getApplicationContext(), "Update success! Result Code: " + resultCode, Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Update Failed! Result Code: " + resultCode, Toast.LENGTH_LONG).show();
+                checkUpdate();
+            }
+        }
     }
 
 }

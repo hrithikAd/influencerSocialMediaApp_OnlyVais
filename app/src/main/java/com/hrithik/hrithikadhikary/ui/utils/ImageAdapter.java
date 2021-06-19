@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,9 +25,16 @@ import com.google.firebase.database.ValueEventListener;
 import com.hrithik.hrithikadhikary.Comment;
 import com.hrithik.hrithikadhikary.CommentsActivity;
 import com.hrithik.hrithikadhikary.Post_item;
+import com.hrithik.hrithikadhikary.ProfileActivity;
 import com.hrithik.hrithikadhikary.R;
 import com.hrithik.hrithikadhikary.User;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 import com.squareup.picasso.Picasso;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -96,18 +104,65 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
             holder.tweetView.setText(postCurrent.gettweet());
             holder.play.setVisibility(View.VISIBLE);
+
+
+
             holder.photoView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + postCurrent.getvideo()));
-                    Intent webIntent = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("http://www.youtube.com/watch?v=" + postCurrent.getvideo()));
-                    try {
-                        mContext.startActivity(appIntent);
-                    } catch (ActivityNotFoundException ex) {
-                        mContext.startActivity(webIntent);
-                    }
+               //     Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + postCurrent.getvideo()));
+              //      Intent webIntent = new Intent(Intent.ACTION_VIEW,
+               //             Uri.parse("http://www.youtube.com/watch?v=" + postCurrent.getvideo()));
+               //     try {
+              //          mContext.startActivity(appIntent);
+              //      } catch (ActivityNotFoundException ex) {
+              //          mContext.startActivity(webIntent);
+              //      }
+
+
+
+
+
+
+
+
+
+                    holder.youTubePlayerView.setVisibility(View.VISIBLE);
+                    holder.photoView.setVisibility(GONE);
+                    holder.play.setVisibility(GONE);
+
+
+                    holder.youTubePlayerView.getPlayerUiController().showYouTubeButton(false);
+                    holder.youTubePlayerView.getPlayerUiController().showVideoTitle(false);
+                    holder.youTubePlayerView.getPlayerUiController().showMenuButton(false);
+
+
+
+                    holder.youTubePlayerView.initialize(new AbstractYouTubePlayerListener() {
+                        @Override
+                        public void onReady(@NotNull YouTubePlayer youTubePlayer) {
+                            holder.photoView.setVisibility(GONE);
+                            holder.play.setVisibility(GONE);
+                            String videoId = postCurrent.getvideo();
+                            youTubePlayer.loadVideo(videoId, 0);
+                        }
+
+                        @Override
+                        public void onStateChange(@NotNull YouTubePlayer youTubePlayer, PlayerConstants.@NotNull PlayerState state) {
+                            holder.photoView.setVisibility(GONE);
+                            holder.play.setVisibility(GONE);
+                            super.onStateChange(youTubePlayer, state);
+                        }
+                    });
+
+
+
+
+
+
+
+
 
                 }
             });
@@ -283,7 +338,31 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         });
 
 
+        //on click on dp and name
 
+        holder.ProfilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goProfileActivity();
+            }
+        });
+
+
+        holder.ProfileName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goProfileActivity();
+            }
+        });
+
+
+
+
+    }
+
+    private void goProfileActivity() {
+        Intent i = new Intent(mContext, ProfileActivity.class);
+        mContext.startActivity(i);
 
     }
 
@@ -306,6 +385,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         public TextView commentCount;
         public ImageView play;
 
+        public ImageView ProfilePic;
+        public TextView ProfileName;
+        public YouTubePlayerView youTubePlayerView;
         public ImageViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -320,6 +402,14 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             feedCommentName = itemView.findViewById(R.id.feedcomment_username);
             commentCount = itemView.findViewById(R.id.commentCount);
             play = itemView.findViewById(R.id.play);
+
+
+            ProfilePic = itemView.findViewById(R.id.profile_image);
+            ProfileName = itemView.findViewById(R.id.name);
+
+
+            youTubePlayerView = itemView.findViewById(R.id.youtube_player_view);
+
         }
     }
 
@@ -363,7 +453,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             }
         });
     }
-
 
 
 
