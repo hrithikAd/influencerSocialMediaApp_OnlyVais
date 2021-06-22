@@ -5,6 +5,7 @@ public class FriendlyMessage {
     private String text;
     private String name;
     private String photoUrl;
+    private String userId;
 
     public FriendlyMessage() {
     }
@@ -14,6 +15,15 @@ public class FriendlyMessage {
         this.name = name;
         this.photoUrl = photoUrl;
     }
+
+
+    public FriendlyMessage(String text, String name, String photoUrl, String userId) {
+        this.text = text;
+        this.name = name;
+        this.photoUrl = photoUrl;
+        this.userId = userId;
+    }
+
 
     public String getText() {
         return text;
@@ -38,4 +48,8 @@ public class FriendlyMessage {
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
     }
+
+    public String getUserId(){return userId;}
+
+    public void setUserId(String userId){this.userId = userId;}
 }

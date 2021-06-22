@@ -72,7 +72,7 @@ private Button joinButton;
 
         voiceLogoView = RootView.findViewById(R.id.voiceLogo);
         recyclerView = RootView.findViewById(R.id.voiceRecycler);
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference("voice");
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("voice1");
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         voiceMember = new ArrayList<>();

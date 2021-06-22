@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "648672613375",
+    "firebase_url": "https://onlyvais-391df-default-rtdb.firebaseio.com",
     "project_id": "onlyvais-391df",
     "storage_bucket": "onlyvais-391df.appspot.com"
   },
@@ -10,6 +11,67 @@
         "mobilesdk_app_id": "1:648672613375:android:c6841882a09148a7a44dca",
         "android_client_info": {
           "package_name": "com.hrithik.hrithikadhikary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "648672613375-30rpfeltj1gds0jrekm6p3svqgm5vhbf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hrithik.hrithikadhikary",
+            "certificate_hash": "2ac0b0e088460897aa22ade8c343e46912290543"
+          }
+        },
+        {
+          "client_id": "648672613375-3s9rh6a3jnpigbviqj6cti8q951etg8i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hrithik.hrithikadhikary",
+            "certificate_hash": "c9bb050d2dd7fce3714d3e7229a30adab2bb1857"
+          }
+        },
+        {
+          "client_id": "648672613375-e00bt4ickj8m5nka9qus7nf52e3gvfoh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hrithik.hrithikadhikary",
+            "certificate_hash": "0e2d1f07b2145ad2971a8f7278400b8a0df39fa0"
+          }
+        },
+        {
+          "client_id": "648672613375-vb7otacf5hcdopd5dpsf3rag4aoesfjg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hrithik.hrithikadhikary",
+            "certificate_hash": "6f568a4b9ee9a1fb880c1ca873d4af7adabecdec"
+          }
+        },
+        {
+          "client_id": "648672613375-3lflaslla2n9mehg1q3sg7nt6qo5spe1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAC9uHtfcEnmj3yPtZD3GsnvCns5lYU_0U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "648672613375-3lflaslla2n9mehg1q3sg7nt6qo5spe1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:648672613375:android:09879b0c426f68cda44dca",
+        "android_client_info": {
+          "package_name": "com.hrithik.hrithikadhikaryclient"
         }
       },
       "oauth_client": [

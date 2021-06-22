@@ -110,7 +110,7 @@ public class JitsiActivity extends AppCompatActivity implements JitsiMeetActivit
     protected void onStop() {
         super.onStop();
 
-        JitsiMeetActivityDelegate.onHostPause(this);
+        JitsiMeetActivityDelegate.onBackPressed();
     }
 
 

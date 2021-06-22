@@ -63,10 +63,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ImageVie
             @Override
             public void onClick(View v) {
                 String currentName = postCurrent.getName();
-                //Toast.makeText(mContext,currentName,Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent("custom-message");
-                //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
                 intent.putExtra("Chatname",currentName);
+                intent.putExtra("UserId",postCurrent.getUserId());
                 LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
             }
         });

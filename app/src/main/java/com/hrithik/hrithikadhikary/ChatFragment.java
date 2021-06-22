@@ -28,6 +28,13 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -41,7 +48,14 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.hrithik.hrithikadhikary.ui.utils.MessageAdapter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.webrtc.ContextUtils.getApplicationContext;
 
 public class ChatFragment extends Fragment {
 
@@ -75,6 +89,19 @@ public class ChatFragment extends Fragment {
 
     private LinearLayoutManager mManager;
     private ArrayList<FriendlyMessage> friendlyMessages;
+
+
+
+    private String msgSendId=null;
+
+
+    //noti
+    private String FCM_API = "https://fcm.googleapis.com/fcm/send";
+    private String serverKey =  "key=" + "AAAAlwfmk_8:APA91bHdvdb-0pU7wydH9pj_XPJSx9tP9xBd55VmCvcrgIXTlQfCPNhhEL-ConZjhxLRYMu9nHek5iazQbreul5eppVB84PJrna5qAhUmjUuCUJ23Ex3h_05Gjp1F_lY_R-rO-DhKeGv";
+    private String contenttype = "application/json";
+
+
+
 
     Boolean blockedUser=false;
     @Override
@@ -186,11 +213,32 @@ public class ChatFragment extends Fragment {
             public void onClick(View view) {
                 // TODO: Send messages on click
 
-                FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), currentUser.getDisplayName(), currentUser.getPhotoUrl().toString());
+                FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), currentUser.getDisplayName(), currentUser.getPhotoUrl().toString(), currentUser.getUid());
                 mMessageDataBaseReference.push().setValue(friendlyMessage);
+
+                //noti
+                if(msgSendId!=null){
+
+                    JSONObject notification = new JSONObject();
+                    JSONObject notifcationBody = new JSONObject();
+                    String topic = "/topics/"+msgSendId;
+                    try {
+                        notifcationBody.put("title", "New Message");
+                        notifcationBody.put("message", currentUser.getDisplayName()+" mentioned you in the Chat!!")  ; //Enter your notification message
+                        notification.put("to", topic);
+                        notification.put("data", notifcationBody);
+
+                    } catch (JSONException e) {
+
+                    }
+
+                    sendNotification(notification);
+                }
+
+
                 // Clear input box
                 mMessageEditText.setText("");
-
+                msgSendId=null;
 
             }
         });
@@ -244,6 +292,8 @@ public class ChatFragment extends Fragment {
             // Get extra data included in the Intent
             String ChatName = intent.getStringExtra("Chatname");
 
+            msgSendId = intent.getStringExtra("UserId");
+
             Spannable WordtoSpan = new SpannableString("@"+ChatName+" ");
             WordtoSpan.setSpan(new ForegroundColorSpan(Color.YELLOW), 0, WordtoSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
@@ -254,5 +304,42 @@ public class ChatFragment extends Fragment {
 
         }
     };
+
+
+
+
+
+    private void sendNotification(JSONObject notification) {
+
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST,FCM_API,notification,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Toast.makeText(getContext(), response.toString(),Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("Authorization", serverKey);
+                params.put("Content-Type", contenttype);
+
+                return params;
+            }
+        };
+
+        queue.add(jsObjRequest);
+
+    }
+
+
+
 
 }
