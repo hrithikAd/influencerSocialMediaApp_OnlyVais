@@ -108,10 +108,9 @@ public class FeedFragment extends Fragment {
                     banner.setVisibility(View.VISIBLE);
                     bannerText.setText(msg.getText());
                     bannerName.setText(msg.getName());
+
                     Picasso.get()
                             .load(msg.getPhotoUrl())
-                            .placeholder(getContext().getResources().getDrawable(R.drawable.darkbackground))
-                            .error(getContext().getResources().getDrawable(R.drawable.darkbackground))
                             .into(bannerDP);
 
                     new Handler().postDelayed(new Runnable() {

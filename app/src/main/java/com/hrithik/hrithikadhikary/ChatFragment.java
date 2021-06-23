@@ -236,6 +236,7 @@ public class ChatFragment extends Fragment {
                 }
 
 
+
                 // Clear input box
                 mMessageEditText.setText("");
                 msgSendId=null;
@@ -316,7 +317,7 @@ public class ChatFragment extends Fragment {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Toast.makeText(getContext(), response.toString(),Toast.LENGTH_LONG).show();
+                      //  Toast.makeText(getContext(), response.toString(),Toast.LENGTH_LONG).show();
                     }
                 },
                 new Response.ErrorListener() {

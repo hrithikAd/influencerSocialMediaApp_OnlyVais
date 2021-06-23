@@ -32,6 +32,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/adminRecycler"
         android:layout_below="@+id/adminText"
+        android:nestedScrollingEnabled="false"
         android:layout_marginLeft="8dp">
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -52,6 +53,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/modRecycler"
         android:layout_below="@id/modText"
+        android:nestedScrollingEnabled="false"
+
         android:layout_marginLeft="8dp"
         ></androidx.recyclerview.widget.RecyclerView>
 
@@ -70,6 +73,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/memberRecycler"
         android:layout_below="@id/memberText"
+        android:nestedScrollingEnabled="false"
+
         android:layout_marginLeft="8dp"
         ></androidx.recyclerview.widget.RecyclerView>
 
@@ -90,6 +95,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/muteRecycler"
         android:layout_below="@id/muteText"
+        android:nestedScrollingEnabled="false"
+
         android:layout_marginLeft="8dp"
         ></androidx.recyclerview.widget.RecyclerView>
 
