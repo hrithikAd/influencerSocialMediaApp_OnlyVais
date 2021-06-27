@@ -6,17 +6,30 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
@@ -33,11 +46,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.hrithik.hrithikadhikary.ui.utils.SectionsPagerAdapter;
+
+import org.jsoup.Jsoup;
+
+import java.io.IOException;
+import java.nio.MappedByteBuffer;
+
 public class MainActivity extends AppCompatActivity    {
     FirebaseAuth Fauth;
     DatabaseReference databaseReference;
-    private AppUpdateManager appUpdateManager;
-    private static final int IMMEDIATE_APP_UPDATE_REQ_CODE = 124;
+    private String sLatestVersion, sCurrentVersion;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,8 +65,8 @@ public class MainActivity extends AppCompatActivity    {
         //toolbar
        //Toolbar toolbar = findViewById(R.id.toolbar);
       //setSupportActionBar(toolbar);
-        appUpdateManager = AppUpdateManagerFactory.create(this);
-        checkUpdate();
+
+
 
 
 
@@ -80,6 +99,8 @@ public class MainActivity extends AppCompatActivity    {
 
     }
 
+
+
     public boolean isOnline() {
         ConnectivityManager conMgr = (ConnectivityManager) getApplicationContext()
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -98,6 +119,9 @@ public class MainActivity extends AppCompatActivity    {
 
 
                     FirebaseMessaging.getInstance().subscribeToTopic("/topics/"+Fauth.getCurrentUser().getUid());
+
+
+                    new GetLatestVersion().execute();
 
 
                 } else {
@@ -147,76 +171,94 @@ public class MainActivity extends AppCompatActivity    {
 
 
 
-
-
-
-
-    //inAPP update
-    private void checkUpdate() {
-
-        appUpdateManager.getAppUpdateInfo().addOnSuccessListener(new OnSuccessListener<AppUpdateInfo>() {
-            @Override
-            public void onSuccess(AppUpdateInfo result) {
-                if (result.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                        && result.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
-                    try {
-
-
-                        appUpdateManager.startUpdateFlowForResult(result,AppUpdateType.IMMEDIATE,MainActivity.this,IMMEDIATE_APP_UPDATE_REQ_CODE);
-
-
-                    } catch (IntentSender.SendIntentException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-    }
-
-
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode == IMMEDIATE_APP_UPDATE_REQ_CODE) {
-            if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(getApplicationContext(), "Update canceled by user! Result Code: " + resultCode, Toast.LENGTH_LONG).show();
-            } else if (resultCode == RESULT_OK) {
-                Toast.makeText(getApplicationContext(), "Update success! Result Code: " + resultCode, Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(getApplicationContext(), "Update Failed! Result Code: " + resultCode, Toast.LENGTH_LONG).show();
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    protected void onResume() {
-        appUpdateManager.getAppUpdateInfo().addOnSuccessListener(new OnSuccessListener<AppUpdateInfo>() {
-            @Override
-            public void onSuccess(AppUpdateInfo result) {
-                if (result.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS ) {
-                    try {
-
-
-                        appUpdateManager.startUpdateFlowForResult(result,AppUpdateType.IMMEDIATE,MainActivity.this,IMMEDIATE_APP_UPDATE_REQ_CODE);
-
-
-                    } catch (IntentSender.SendIntentException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-
-        super.onResume();
-    }
-
     @Override
     protected void onStop() {
         super.onStop();
     }
 
 
+    private class GetLatestVersion extends AsyncTask<String,Void,String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            try {
+                sLatestVersion = Jsoup
+                        .connect("https://play.google.com/store/apps/details?id="
+                        + getPackageName())
+                        .timeout(30000)
+                        .get()
+                        .select("div.hAyfc:nth-child(4)>"+
+                                "span:nth-child(2) > div:nth-child(1)"+
+                                "> span:nth-child(1)")
+                        .first()
+                        .ownText();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return sLatestVersion;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            //get current version
+            sCurrentVersion = BuildConfig.VERSION_NAME;
+
+            if(sLatestVersion!=null){
+
+
+
+               if(!sCurrentVersion.equalsIgnoreCase(sLatestVersion)){
+                    updateAlertDialog();
+                }
+
+            }
+        }
+    }
+
+    private void updateAlertDialog() {
+        AlertDialog.Builder builder
+                = new AlertDialog
+                .Builder(new ContextThemeWrapper(this, R.style.myDialog));
+
+        // Set the message show for the Alert time
+        builder.setMessage("New Update Available!!");
+
+        // Set Alert Title
+        builder.setTitle("OnlyVai");
+
+        // Set Cancelable false
+        // for when the user clicks on the outside
+        // the Dialog Box then it will remain show
+        builder.setCancelable(false);
+
+        // Set the positive button with yes name
+        // OnClickListener method is use of
+        // DialogInterface interface.
+
+        builder
+                .setPositiveButton(
+                        "Update",
+                        new DialogInterface
+                                .OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which)
+                            {
+
+                                // When the user click yes button
+                                // then app will close
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id="+getPackageName())));
+                                dialog.dismiss();
+                            }
+                        });
+
+
+        // Create the Alert dialog
+        AlertDialog alertDialog = builder.create();
+
+        // Show the Alert Dialog box
+        alertDialog.show();
+    }
 }

@@ -10,11 +10,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -24,14 +34,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hrithik.hrithikadhikary.Comment;
 import com.hrithik.hrithikadhikary.CommentsActivity;
+import com.hrithik.hrithikadhikary.MainActivity;
+import com.hrithik.hrithikadhikary.PodcastActivity;
 import com.hrithik.hrithikadhikary.Post_item;
 import com.hrithik.hrithikadhikary.ProfileActivity;
 import com.hrithik.hrithikadhikary.R;
 import com.hrithik.hrithikadhikary.User;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
@@ -48,6 +56,8 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     private FirebaseUser firebaseUser;
     private ArrayList<Comment> commentList;
 
+
+
     public ImageAdapter(Context context,ArrayList<Post_item> posts){
         mContext = context;
         mPosts = posts;
@@ -60,20 +70,37 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         return new ImageViewHolder(v);
     }
 
+
+
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
+
+
+
+
+
+
+
+
+
+
+
+
+
         holder.like_btm.setColorFilter(Color.RED);
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         Post_item postCurrent = mPosts.get(position);
         holder.timeView.setText(postCurrent.getdate());
         if(postCurrent.gettype()==1){
             //tweet
+            holder.podcastLayout.setVisibility(View.GONE);
             holder.play.setVisibility(GONE);
             holder.photoView.setVisibility(GONE);
             holder.tweetView.setText(postCurrent.gettweet());
         }
         else if(postCurrent.gettype()==2) {
             //photo
+            holder.podcastLayout.setVisibility(View.GONE);
             holder.play.setVisibility(GONE);
             if(postCurrent.gettweet().equalsIgnoreCase("")){
                 holder.tweetView.setVisibility(GONE);
@@ -94,75 +121,27 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
             //video
 
-            holder.photoView.setVisibility(View.VISIBLE);
-            Picasso.get()
-                    .load(postCurrent.getpicture())
-                    .resize(1280,720)
-                    .placeholder(mContext.getResources().getDrawable(R.drawable.darkbackground))
-                    .error(mContext.getResources().getDrawable(R.drawable.darkbackground))
-                    .into(holder.photoView);
+            holder.photoView.setVisibility(GONE);
 
-            holder.tweetView.setText(postCurrent.gettweet());
-            holder.play.setVisibility(View.VISIBLE);
+            holder.tweetView.setVisibility(GONE);
+            holder.play.setVisibility(GONE);
 
+            holder.podcastLayout.setVisibility(View.VISIBLE);
 
+            holder.PodcastName.setText(postCurrent.gettweet());
 
-            holder.photoView.setOnClickListener(new View.OnClickListener() {
+            holder.nameDpLayout.setVisibility(GONE);
+
+            holder.podcastLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-               //     Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + postCurrent.getvideo()));
-              //      Intent webIntent = new Intent(Intent.ACTION_VIEW,
-               //             Uri.parse("http://www.youtube.com/watch?v=" + postCurrent.getvideo()));
-               //     try {
-              //          mContext.startActivity(appIntent);
-              //      } catch (ActivityNotFoundException ex) {
-              //          mContext.startActivity(webIntent);
-              //      }
+                    //acitivity to podcast
+                    String podcastLink  = postCurrent.getvideo();
 
-
-
-
-
-
-
-
-
-                    holder.youTubePlayerView.setVisibility(View.VISIBLE);
-                    holder.photoView.setVisibility(GONE);
-                    holder.play.setVisibility(GONE);
-
-
-                    holder.youTubePlayerView.getPlayerUiController().showYouTubeButton(false);
-                    holder.youTubePlayerView.getPlayerUiController().showVideoTitle(false);
-                    holder.youTubePlayerView.getPlayerUiController().showMenuButton(false);
-
-
-
-                    holder.youTubePlayerView.initialize(new AbstractYouTubePlayerListener() {
-                        @Override
-                        public void onReady(@NotNull YouTubePlayer youTubePlayer) {
-                            holder.photoView.setVisibility(GONE);
-                            holder.play.setVisibility(GONE);
-                            String videoId = postCurrent.getvideo();
-                            youTubePlayer.loadVideo(videoId, 0);
-                        }
-
-                        @Override
-                        public void onStateChange(@NotNull YouTubePlayer youTubePlayer, PlayerConstants.@NotNull PlayerState state) {
-                            holder.photoView.setVisibility(GONE);
-                            holder.play.setVisibility(GONE);
-                            super.onStateChange(youTubePlayer, state);
-                        }
-                    });
-
-
-
-
-
-
-
-
+                    Intent i = new Intent(mContext, PodcastActivity.class);
+                    i.putExtra("podcastLink", podcastLink);
+                    mContext.startActivity(i);
 
                 }
             });
@@ -387,7 +366,12 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
         public ImageView ProfilePic;
         public TextView ProfileName;
-        public YouTubePlayerView youTubePlayerView;
+
+        public TextView PodcastName;
+
+        public RelativeLayout podcastLayout;
+        public RelativeLayout nameDpLayout;
+
         public ImageViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -407,9 +391,10 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             ProfilePic = itemView.findViewById(R.id.profile_image);
             ProfileName = itemView.findViewById(R.id.name);
 
+            PodcastName = itemView.findViewById(R.id.podcastTitle);
+            podcastLayout = itemView.findViewById(R.id.podcastLayout);
 
-            youTubePlayerView = itemView.findViewById(R.id.youtube_player_view);
-
+            nameDpLayout = itemView.findViewById(R.id.LayoutName);
         }
     }
 

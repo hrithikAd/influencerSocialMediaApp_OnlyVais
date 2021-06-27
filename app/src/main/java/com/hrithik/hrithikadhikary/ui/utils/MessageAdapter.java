@@ -58,6 +58,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ImageVie
 
 
 
+
+
         //on click name
         holder.mName.setOnClickListener(new View.OnClickListener() {
             @Override

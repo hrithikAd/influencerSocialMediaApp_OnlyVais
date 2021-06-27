@@ -12,8 +12,8 @@ android {
         applicationId "com.hrithik.hrithikadhikary"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 4
-        versionName "0.3.1"
+        versionCode 6
+        versionName "0.6"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -70,9 +70,13 @@ dependencies {
 
     implementation ('org.jitsi.react:jitsi-meet-sdk:2.9.0') { transitive = true }
     implementation 'com.google.android.play:core:1.7.3'
-
-    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
-
     implementation 'com.android.volley:volley:1.2.0'
+
+
+    implementation 'com.google.android.gms:play-services-ads:20.2.0'
+
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.17'
+
+    implementation 'org.jsoup:jsoup:1.10.2'
 
 }

@@ -55,7 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!!"
-        android:textSize="22sp"
+        android:textSize="17sp"
         android:textStyle="bold"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/white"
@@ -101,16 +101,52 @@
 
 
 
-        <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-            android:id="@+id/youtube_player_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:autoPlay="false"
-            app:showFullScreenButton="false"
-            android:visibility="gone"
-            android:layout_below="@id/photo_layout"
-            app:enableAutomaticInitialization="false"
-            />
+
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/photo_layout"
+    android:id="@+id/podcastLayout"
+    >
+
+
+
+    <pl.droidsonroids.gif.GifImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:id="@+id/podcastImage"
+        android:src="@drawable/podcastgif"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/podcastImage"
+        android:id="@+id/podcastTitle"
+        android:text="podcast"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/white"
+        android:layout_marginLeft="8dp"
+        android:layout_centerVertical="true"
+        ></TextView>
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_baseline_playpodcast"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="8dp"
+        ></ImageView>
+
+</RelativeLayout>
+
+
+
+
 
 
 
@@ -136,11 +172,11 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:id="@+id/LikeLayout"
-    android:layout_below="@id/youtube_player_view">
+    android:layout_below="@id/podcastLayout">
 
     <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:src="@drawable/ic_baseline_favorite_border_24"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="4dp"
@@ -161,8 +197,8 @@
         ></TextView>
 
     <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_toRightOf="@id/like_number"
         android:src="@drawable/ic_baseline_comment_24"
         android:layout_marginTop="8dp"

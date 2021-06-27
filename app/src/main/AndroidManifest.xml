@@ -31,7 +31,8 @@
         android:roundIcon="@mipmap/ic_launcher_icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.HrithikAdhikary">
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".PodcastActivity"></activity>
+        <activity android:name=".ProfileActivity" />
         <activity android:name=".ModActivity" />
         <activity android:name=".JitsiActivity" />
 
@@ -57,6 +58,14 @@
             </intent-filter>
         </activity>
 
+
+
+        <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
+
+        <!-- My AdMob app ID: ca-app-pub-7056810959104454~9789125189 -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-7056810959104454~9789125189"/>
     </application>
 
 </manifest>
