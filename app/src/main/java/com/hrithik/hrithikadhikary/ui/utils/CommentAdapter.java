@@ -28,6 +28,7 @@ import com.hrithik.hrithikadhikary.CommentsActivity;
 import com.hrithik.hrithikadhikary.MainActivity;
 import com.hrithik.hrithikadhikary.R;
 import com.hrithik.hrithikadhikary.User;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,7 +148,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ImageVie
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 //bug
-                Glide.with(mContext).load(user.getPhotoUrl()).into(imageView);
+                Picasso.get()
+                        .load(user.getPhotoUrl())
+                        .into(imageView);
                 //bug
                 username.setText(user.getDisplayName());
             }

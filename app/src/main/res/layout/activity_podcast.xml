@@ -5,23 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:backgroundTint="@color/black"
+    android:backgroundTint="#000000"
     >
 
 
-<VideoView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/podcastBackgoundVideo"
-    android:visibility="gone"
-    >
 
-</VideoView>
+    <pl.droidsonroids.gif.GifImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/podcastbackground"
+        android:id="@+id/podcastBackgoundVideo"
+        android:backgroundTint="#000000"
+        android:visibility="gone"
+         />
+
+
+
     <WebView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:id="@+id/webview"
+        android:layout_below="@id/podcastBackgoundVideo"
         android:visibility="gone"
         ></WebView>
 

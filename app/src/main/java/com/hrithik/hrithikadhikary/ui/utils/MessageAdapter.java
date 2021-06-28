@@ -2,6 +2,7 @@ package com.hrithik.hrithikadhikary.ui.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,15 +46,46 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ImageVie
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         FriendlyMessage postCurrent = mPosts.get(position);
 
-        holder.mName.setText(postCurrent.getName());
-        holder.mMessage.setText(postCurrent.getText());
+
+
         Picasso.get()
                 .load(postCurrent.getPhotoUrl())
-                .placeholder(mContext.getResources().getDrawable(R.drawable.darkbackground))
-                .error(mContext.getResources().getDrawable(R.drawable.darkbackground))
                 .into(holder.mPhoto);
 
+
+
         //name color
+        if(postCurrent.getText().contains(firebaseUser.getDisplayName())){
+            holder.mMessage.setText(postCurrent.getText());
+            holder.mMessage.setTextColor(Color.YELLOW);
+        }
+        else{
+            holder.mMessage.setText(postCurrent.getText());
+            holder.mMessage.setTextColor(Color.parseColor("#cccccc"));
+
+        }
+        //end
+
+        //admin & mod
+
+        if(postCurrent.getUserId()!=null && firebaseUser.getUid()!=null ) {
+
+            if(postCurrent.getUserId().equalsIgnoreCase("SDe5xSNOYsPMfke8xL2gAMuOQh32")){
+
+                holder.mName.setText(postCurrent.getName());
+                holder.mName.setTextColor(Color.RED);
+
+            }
+
+            else if (postCurrent.getUserId().equalsIgnoreCase(firebaseUser.getUid())) {
+                holder.mName.setText(postCurrent.getName());
+                holder.mName.setTextColor(Color.CYAN);
+            } else {
+                holder.mName.setText(postCurrent.getName());
+                holder.mName.setTextColor(Color.WHITE);
+            }
+
+        }
         //end
 
 

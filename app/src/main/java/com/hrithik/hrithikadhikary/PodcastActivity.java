@@ -13,6 +13,7 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.VideoView;
 
@@ -28,7 +29,7 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 public class PodcastActivity extends AppCompatActivity {
     private WebView webView;
-    private VideoView videoview;
+    private ImageView backgroundView;
     private InterstitialAd mInterstitialAd;
     private String podcastLink;
 
@@ -56,7 +57,7 @@ public class PodcastActivity extends AppCompatActivity {
         podcastLink = intent.getExtras().getString("podcastLink");
 
         //background video podcastBackgoundVideo
-        videoview = (VideoView) findViewById(R.id.podcastBackgoundVideo);
+        backgroundView = (ImageView) findViewById(R.id.podcastBackgoundVideo);
 
 
         webView = (WebView) findViewById(R.id.webview);
@@ -81,10 +82,6 @@ public class PodcastActivity extends AppCompatActivity {
         (new Handler()).postDelayed(this::showAd, 5000);
 
 
-        Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.podcastbackground);
-        videoview.setVideoURI(uri);
-        videoview.start();
-
 
 
 
@@ -101,7 +98,7 @@ public class PodcastActivity extends AppCompatActivity {
             progressBar.setVisibility(View.GONE);
 
 
-            videoview.setVisibility(View.VISIBLE);
+            backgroundView.setVisibility(View.VISIBLE);
 
             webView.setVisibility(View.VISIBLE);
 
@@ -118,7 +115,6 @@ public class PodcastActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        videoview.start();
         super.onResume();
     }
 
@@ -160,7 +156,7 @@ public class PodcastActivity extends AppCompatActivity {
                         progressBar.setVisibility(View.GONE);
 
 
-                        videoview.setVisibility(View.VISIBLE);
+                        backgroundView.setVisibility(View.VISIBLE);
 
                         webView.setVisibility(View.VISIBLE);
 

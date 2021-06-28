@@ -21,6 +21,8 @@ import com.hrithik.hrithikadhikary.ui.utils.MemberAdapter;
 import com.hrithik.hrithikadhikary.ui.utils.VoiceAdapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class MembersFragment extends Fragment {
 
@@ -107,6 +109,7 @@ public class MembersFragment extends Fragment {
                     }
                 }
 
+
                 //admin
                 memberAdapter = new MemberAdapter(getContext(),AdminList);
                 recyclerViewAdmin.setAdapter(memberAdapter);
@@ -116,13 +119,25 @@ public class MembersFragment extends Fragment {
                 memberAdapter = new MemberAdapter(getContext(),ModList);
                 recyclerViewMod.setAdapter(memberAdapter);
 
-                //member
-                memberAdapter = new MemberAdapter(getContext(),MemberList);
-                recyclerViewMember.setAdapter(memberAdapter);
-
                 //mute
                 memberAdapter = new MemberAdapter(getContext(),MuteList);
                 recyclerViewMute.setAdapter(memberAdapter);
+
+
+                //member
+                if (MemberList.size() > 0) {
+                    Collections.sort(MemberList, new Comparator<User>() {
+                        @Override
+                        public int compare(final User object1, final User object2) {
+                            return object1.getDisplayName().compareTo(object2.getDisplayName());
+                        }
+                    });
+                }
+
+                memberAdapter = new MemberAdapter(getContext(),MemberList);
+                recyclerViewMember.setAdapter(memberAdapter);
+
+
             }
 
             @Override

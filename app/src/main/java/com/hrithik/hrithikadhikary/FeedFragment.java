@@ -44,7 +44,7 @@ public class FeedFragment extends Fragment {
 
     private ProgressBar mProgressbar;
 
-    private int DELAY = 5000; // Delay time in milliseconds
+    private int DELAY = 2000; // Delay time in milliseconds
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
