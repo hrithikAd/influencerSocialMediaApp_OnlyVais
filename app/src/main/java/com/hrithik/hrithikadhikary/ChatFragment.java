@@ -155,32 +155,35 @@ public class ChatFragment extends Fragment {
 
 
         //modCheck
-        mDatabaseReference2 = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
-        mDatabaseReference2.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+       //***********bug
+        if(currentUser.getUid()!=null) {
 
-                User thisUser = snapshot.getValue(User.class);
+            mDatabaseReference2 = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
+            mDatabaseReference2.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                if(thisUser.getRole().contains("chatMute")){
+                    User thisUser = snapshot.getValue(User.class);
 
-                    Toast.makeText(getContext(),"You are temporarily muted by mods!!",Toast.LENGTH_LONG).show();
-                    mSendButton.setEnabled(false);
-                    blockedUser=true;
+                    //***********bug
+                    if (thisUser.getRole() != null && thisUser.getRole().contains("chatMute")) {
+
+                        Toast.makeText(getContext(), "You are temporarily muted by mods!!", Toast.LENGTH_LONG).show();
+                        mSendButton.setEnabled(false);
+                        blockedUser = true;
+                    } else {
+                        mSendButton.setEnabled(true);
+                    }
                 }
 
-
-                else{
-                    mSendButton.setEnabled(true);
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(getContext(), "Firebase Error", Toast.LENGTH_LONG).show();
                 }
-            }
+            });
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(),"Firebase Error",Toast.LENGTH_LONG).show();
-            }
-        });
 
+        }
         //end
 
         // Enable Send button when there's text to send

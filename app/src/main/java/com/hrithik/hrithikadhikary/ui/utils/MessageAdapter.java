@@ -1,6 +1,8 @@
 package com.hrithik.hrithikadhikary.ui.utils;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -9,13 +11,17 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 import com.hrithik.hrithikadhikary.FriendlyMessage;
 import com.hrithik.hrithikadhikary.R;
 import com.squareup.picasso.Picasso;
@@ -83,6 +89,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ImageVie
             } else {
                 holder.mName.setText(postCurrent.getName());
                 holder.mName.setTextColor(Color.WHITE);
+
             }
 
         }
@@ -103,6 +110,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ImageVie
                 LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
             }
         });
+
 
 
     }
