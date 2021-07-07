@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -43,18 +45,39 @@ public class MembersFragment extends Fragment {
     private ArrayList<User> MuteList;
 
 
+    private ProgressBar progressBar;
+    private TextView t1,t2,t3,t4;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View RootView = inflater.inflate(R.layout.fragment_members, container, false);
 
+        getActivity().setTitle("লোকজোন");
+
+
+        progressBar = RootView.findViewById(R.id.memberProgressBar);
+
+        t1 = RootView.findViewById(R.id.adminText);
+
+        t2 = RootView.findViewById(R.id.modText);
+
+        t3 = RootView.findViewById(R.id.memberText);
+
+        t4 = RootView.findViewById(R.id.muteText);
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("Users");
 
         //admin
         recyclerViewAdmin = RootView.findViewById(R.id.adminRecycler);
         recyclerViewAdmin.setHasFixedSize(true);
+        recyclerViewAdmin.setItemViewCacheSize(20);
+        recyclerViewAdmin.setDrawingCacheEnabled(true);
+        recyclerViewAdmin.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+
+
         recyclerViewAdmin.setLayoutManager(new LinearLayoutManager(getContext()));
         AdminList = new ArrayList<>();
         recyclerViewAdmin.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -62,6 +85,9 @@ public class MembersFragment extends Fragment {
         //mod
         recyclerViewMod = RootView.findViewById(R.id.modRecycler);
         recyclerViewMod.setHasFixedSize(true);
+        recyclerViewMod.setItemViewCacheSize(20);
+        recyclerViewMod.setDrawingCacheEnabled(true);
+        recyclerViewMod.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         recyclerViewMod.setLayoutManager(new LinearLayoutManager(getContext()));
         ModList = new ArrayList<>();
         recyclerViewMod.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -69,6 +95,9 @@ public class MembersFragment extends Fragment {
         //member
         recyclerViewMember = RootView.findViewById(R.id.memberRecycler);
         recyclerViewMember.setHasFixedSize(true);
+        recyclerViewMember.setItemViewCacheSize(20);
+        recyclerViewMember.setDrawingCacheEnabled(true);
+        recyclerViewMember.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         recyclerViewMember.setLayoutManager(new LinearLayoutManager(getContext()));
         MemberList = new ArrayList<>();
         recyclerViewMember.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -76,6 +105,9 @@ public class MembersFragment extends Fragment {
         //mute
         recyclerViewMute = RootView.findViewById(R.id.muteRecycler);
         recyclerViewMute.setHasFixedSize(true);
+        recyclerViewMute.setItemViewCacheSize(20);
+        recyclerViewMute.setDrawingCacheEnabled(true);
+        recyclerViewMute.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         recyclerViewMute.setLayoutManager(new LinearLayoutManager(getContext()));
         MuteList = new ArrayList<>();
         recyclerViewMute.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -119,6 +151,8 @@ public class MembersFragment extends Fragment {
                 memberAdapter = new MemberAdapter(getContext(),ModList);
                 recyclerViewMod.setAdapter(memberAdapter);
 
+
+
                 //mute
                 memberAdapter = new MemberAdapter(getContext(),MuteList);
                 recyclerViewMute.setAdapter(memberAdapter);
@@ -137,6 +171,11 @@ public class MembersFragment extends Fragment {
                 memberAdapter = new MemberAdapter(getContext(),MemberList);
                 recyclerViewMember.setAdapter(memberAdapter);
 
+                progressBar.setVisibility(View.GONE);
+                t1.setVisibility(View.VISIBLE);
+                t2.setVisibility(View.VISIBLE);
+                t3.setVisibility(View.VISIBLE);
+                t4.setVisibility(View.VISIBLE);
 
             }
 

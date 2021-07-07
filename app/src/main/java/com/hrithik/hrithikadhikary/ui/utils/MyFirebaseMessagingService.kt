@@ -55,16 +55,22 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 R.drawable.ic_launcher_foreground
             )
 
+        val image = BitmapFactory.decodeResource(
+            resources,
+            R.drawable.profilepic
+        )
+
             val notificationSoundUri =
                 RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
             val notificationBuilder = NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_baseline_notifications_active_24)
-                .setLargeIcon(largeIcon)
+                .setLargeIcon(image)
                 .setContentTitle(p0?.data?.get("title"))
                 .setContentText(p0?.data?.get("message"))
                 .setAutoCancel(true)
                 .setSound(notificationSoundUri)
                 .setContentIntent(pendingIntent)
+
 
             //Set notification color to match your app color template
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

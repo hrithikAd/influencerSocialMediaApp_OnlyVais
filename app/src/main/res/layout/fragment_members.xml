@@ -6,6 +6,14 @@
     tools:context=".MembersFragment"
     android:background="@color/greyBackground">
 
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:id="@+id/memberProgressBar"
+        android:visibility="visible"
+        ></ProgressBar>
+
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
@@ -24,6 +32,8 @@
        android:textSize="20sp"
        android:id="@+id/adminText"
        android:layout_margin="8dp"
+
+       android:visibility="invisible"
        >
    </TextView>
 
@@ -45,6 +55,8 @@
         android:textSize="20sp"
         android:layout_margin="8dp"
         android:id="@+id/modText"
+
+        android:visibility="invisible"
         android:layout_below="@+id/adminRecycler">
    </TextView>
 
@@ -66,6 +78,8 @@
         android:textSize="20sp"
         android:layout_margin="8dp"
         android:id="@+id/memberText"
+
+        android:visibility="invisible"
         android:layout_below="@id/modRecycler"></TextView>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -88,6 +102,8 @@
         android:textSize="20sp"
         android:layout_margin="8dp"
         android:id="@+id/muteText"
+
+        android:visibility="invisible"
         android:layout_below="@id/memberRecycler"></TextView>
 
     <androidx.recyclerview.widget.RecyclerView

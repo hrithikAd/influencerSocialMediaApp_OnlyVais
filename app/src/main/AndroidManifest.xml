@@ -29,7 +29,8 @@
         android:roundIcon="@mipmap/ic_launcher_icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.HrithikAdhikary">
-        <activity android:name=".PodcastActivity"></activity>
+        <activity android:name=".StoryActivity"></activity>
+        <activity android:name=".PodcastActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".ModActivity" />
         <activity android:name=".JitsiActivity" />
@@ -48,22 +49,18 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.HrithikAdhikary.NoActionBar">
+            android:theme="@style/Theme.HrithikAdhikary.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-
-
-        <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
-
+        </activity> <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
         <!-- My AdMob app ID: ca-app-pub-7056810959104454~9789125189 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-7056810959104454~9789125189"/>
+            android:value="ca-app-pub-3940256099942544~3347511713" />
     </application>
 
 </manifest>

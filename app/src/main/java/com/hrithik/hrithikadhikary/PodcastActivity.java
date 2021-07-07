@@ -1,13 +1,16 @@
 package com.hrithik.hrithikadhikary;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -87,6 +90,8 @@ public class PodcastActivity extends AppCompatActivity {
 
     }
 
+
+
     private void showAd() {
 
 
@@ -113,6 +118,14 @@ public class PodcastActivity extends AppCompatActivity {
         }
     }
 
+
+
+
+
+
+
+
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -137,7 +150,7 @@ public class PodcastActivity extends AppCompatActivity {
 
         //sample - ca-app-pub-3940256099942544/1033173712
         //my ad unit - ca-app-pub-7056810959104454/5312492420
-        InterstitialAd.load(this,"ca-app-pub-7056810959104454/5312492420", adRequest, new InterstitialAdLoadCallback() {
+        InterstitialAd.load(this,"ca-app-pub-3940256099942544/1033173712", adRequest, new InterstitialAdLoadCallback() {
             @Override
             public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
                 // The mInterstitialAd reference will be null until

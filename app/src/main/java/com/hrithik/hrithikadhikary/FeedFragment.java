@@ -1,4 +1,5 @@
 package com.hrithik.hrithikadhikary;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -16,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -28,6 +30,20 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
+
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+
 
 import static android.view.View.GONE;
 
@@ -42,36 +58,77 @@ public class FeedFragment extends Fragment {
     private FriendlyMessage msg;
     private ViewPager viewPager;
 
+    private CircleImageView mStory;
+
     private ProgressBar mProgressbar;
 
-    private int DELAY = 2000; // Delay time in milliseconds
+    private InterstitialAd mInterstitialAd;
+
+    private int DELAY = 5000; // Delay time in milliseconds
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        getActivity().setTitle("onlyভাই");
 
         View RootView = inflater.inflate(R.layout.fragment_feed, container, false);
 
         mProgressbar = RootView.findViewById(R.id.progressbarFeed);
 
         mRecyclerView = (RecyclerView) RootView.findViewById(R.id.recycler_view);
-        mRecyclerView.hasFixedSize();
+        mRecyclerView.setHasFixedSize(true);
 
 
         //cache
         mRecyclerView.setItemViewCacheSize(20);
         mRecyclerView.setDrawingCacheEnabled(true);
         mRecyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        mRecyclerView.setNestedScrollingEnabled(false);
         //end
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setVisibility(GONE);
 
         mPosts = new ArrayList<>();
 
+        mStory = RootView.findViewById(R.id.story);
 
         //chat notification
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
+
+
+        //ad
+        //ads
+        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+        creatPersonalizedAd();
+        //end
+        //end
+
+        //story
+        mStory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                if (mInterstitialAd != null) {
+                    mInterstitialAd.show(getActivity());
+
+                } else {
+
+                    Intent i = new Intent(getContext(), StoryActivity.class);
+                    startActivity(i);
+
+                }
+
+                //border width 3
+                mStory.setBorderWidth(0);
+            }
+        });
 
 
         //Banner
@@ -84,9 +141,7 @@ public class FeedFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                viewPager = (ViewPager) getActivity().findViewById(
-                        R.id.view_pager);
-                viewPager.setCurrentItem(1);
+        ((BottomNavigationView)getActivity().findViewById(R.id.bottom_navigation)).setSelectedItemId(R.id.action_chat);
 
             }
         });
@@ -147,7 +202,7 @@ public class FeedFragment extends Fragment {
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                mPosts.clear();
                 for(DataSnapshot postSnap : snapshot.getChildren()){
                     Post_item post = postSnap.getValue(Post_item.class);
                     mPosts.add(post);
@@ -159,6 +214,7 @@ public class FeedFragment extends Fragment {
                 mRecyclerView.setAdapter(mImageAdapter);
                 mRecyclerView.setVisibility(View.VISIBLE);
                 mProgressbar.setVisibility(GONE);
+                mStory.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -179,4 +235,59 @@ public class FeedFragment extends Fragment {
     }
 
 
+    private void creatPersonalizedAd() {
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        createIntertitialAds(adRequest);
+    }
+    private void createIntertitialAds(AdRequest adRequest){
+
+
+        //sample - ca-app-pub-3940256099942544/1033173712
+        //my ad unit - ca-app-pub-7056810959104454/5312492420
+        InterstitialAd.load(getContext(),"ca-app-pub-3940256099942544/1033173712", adRequest, new InterstitialAdLoadCallback() {
+            @Override
+            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                // The mInterstitialAd reference will be null until
+                // an ad is loaded.
+                mInterstitialAd = interstitialAd;
+
+
+                mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback(){
+                    @Override
+                    public void onAdDismissedFullScreenContent() {
+
+
+                        // Called when fullscreen content is dismissed.
+                        Intent i = new Intent(getContext(), StoryActivity.class);
+                        startActivity(i);
+
+                        creatPersonalizedAd();
+                    }
+
+                    @Override
+                    public void onAdFailedToShowFullScreenContent(AdError adError) {
+                        // Called when fullscreen content failed to show.
+                    }
+
+                    @Override
+                    public void onAdShowedFullScreenContent() {
+                        // Called when fullscreen content is shown.
+                        // Make sure to set your reference to null so you don't
+                        // show it a second time.
+                        mInterstitialAd = null;
+                    }
+                });
+
+
+            }
+
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+
+                mInterstitialAd = null;
+            }
+        });
+    }
 }

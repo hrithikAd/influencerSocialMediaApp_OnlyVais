@@ -110,6 +110,7 @@ public class ChatFragment extends Fragment {
         // Inflate the layout for this fragment
         View RootView = inflater.inflate(R.layout.fragment_chat, container, false);
 
+        getActivity().setTitle("আড্ডা");
 
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver,
                 new IntentFilter("custom-message"));

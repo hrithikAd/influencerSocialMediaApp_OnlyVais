@@ -65,7 +65,7 @@ private Button joinButton;
                              Bundle savedInstanceState) {
         View RootView = inflater.inflate(R.layout.fragment_voice, container, false);
 
-
+        getActivity().setTitle("গল্প");
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -245,7 +245,7 @@ private Button joinButton;
 
                 int count = ((int) snapshot.getChildrenCount());
 
-                if(count>=4){
+                if(count>=2){
                     joinButton2.setEnabled(false);
                 }
                 else{

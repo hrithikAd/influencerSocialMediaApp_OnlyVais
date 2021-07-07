@@ -3,54 +3,31 @@ package com.hrithik.hrithikadhikary;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentSender;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.ads.AdError;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.FullScreenContentCallback;
-import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-import com.google.android.gms.ads.interstitial.InterstitialAd;
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.play.core.appupdate.AppUpdateInfo;
-import com.google.android.play.core.appupdate.AppUpdateManager;
-import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
-import com.google.android.play.core.install.InstallState;
-import com.google.android.play.core.install.InstallStateUpdatedListener;
-import com.google.android.play.core.install.model.AppUpdateType;
-import com.google.android.play.core.install.model.InstallStatus;
-import com.google.android.play.core.install.model.UpdateAvailability;
-import com.google.android.play.core.tasks.OnSuccessListener;
-import com.google.android.play.core.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.hrithik.hrithikadhikary.ui.utils.SectionsPagerAdapter;
 
 import org.jsoup.Jsoup;
 
 import java.io.IOException;
-import java.nio.MappedByteBuffer;
 
 public class MainActivity extends AppCompatActivity    {
     FirebaseAuth Fauth;
@@ -71,11 +48,50 @@ public class MainActivity extends AppCompatActivity    {
 
 
         FirebaseMessaging.getInstance().subscribeToTopic("/topics/HrithikAdhikary");
-        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
-        ViewPager viewPager = findViewById(R.id.view_pager);
-        viewPager.setAdapter(sectionsPagerAdapter);
-        TabLayout tabs = findViewById(R.id.tabs);
-        tabs.setupWithViewPager(viewPager);
+
+        //toolbar
+        // assigning ID of the toolbar to a variable
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        // using toolbar as ActionBar
+        setSupportActionBar(toolbar);
+
+        toolbar.setTitleTextColor(Color.WHITE);
+
+        //bottom navigation
+        BottomNavigationView bottomNavigationView = (BottomNavigationView)
+                findViewById(R.id.bottom_navigation);
+
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.FragmentContainer, new FeedFragment()).commit();
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                        Fragment selectFragment = null;
+                        switch (item.getItemId()) {
+                            case R.id.action_home:
+                                selectFragment = new FeedFragment();
+                                break;
+                            case R.id.action_chat:
+                                selectFragment = new ChatFragment();
+                                break;
+                            case R.id.action_voiceChat:
+                                selectFragment = new VoiceFragment();
+                                break;
+
+                            case R.id.action_member:
+                                selectFragment = new MembersFragment();
+                                break;
+                        }
+                        getSupportFragmentManager().beginTransaction().replace(R.id.FragmentContainer, selectFragment).commit();
+
+                        return true;
+                    }
+                });
+
+        //end
 
         if (isOnline()) {
 

@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".FeedFragment"
     android:id="@+id/RLFeed"
-    android:background="@color/background"
-    >
+    android:background="@color/background">
 
     <ProgressBar
         android:id="@+id/progressbarFeed"
@@ -15,22 +15,50 @@
         android:layout_centerInParent="true"
         />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/recycler_view"
-        >
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
-    </androidx.recyclerview.widget.RecyclerView>
 
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/profilepic"
+            android:id="@+id/story"
+            android:layout_margin="8dp"
+            app:civ_border_width="3dp"
+            app:civ_border_color="@color/purple_200"
+            android:visibility="invisible"
+            ></de.hdodenhof.circleimageview.CircleImageView>
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/recycler_view"
+            android:layout_below="@+id/story"
+            >
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+</RelativeLayout>
+    </ScrollView>
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/banner"
         android:visibility="gone"
-        android:background="@color/white"
-        android:layout_alignParentTop="true"
+        android:background="@drawable/layout_rounded"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
         >
 
 
