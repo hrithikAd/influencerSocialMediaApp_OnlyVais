@@ -16,6 +16,8 @@
         android:contentDescription="@null"
         tools:src="@drawable/profilepic" />
 
+
+
     <!--on below line we are creating
         linear layout for our views-->
     <LinearLayout

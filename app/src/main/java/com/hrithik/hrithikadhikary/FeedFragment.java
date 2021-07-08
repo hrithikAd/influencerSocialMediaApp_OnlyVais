@@ -53,6 +53,8 @@ public class FeedFragment extends Fragment {
     private DatabaseReference mDatabaseReference;
 
     private DatabaseReference mDatabaseReference2;
+    private DatabaseReference mDatabaseReference3;
+
     private ArrayList<Post_item> mPosts;
     private FirebaseAuth mAuth;
     private FriendlyMessage msg;
@@ -64,8 +66,9 @@ public class FeedFragment extends Fragment {
 
     private InterstitialAd mInterstitialAd;
 
-    private int DELAY = 5000; // Delay time in milliseconds
+    private int DELAY = 3000; // Delay time in milliseconds
 
+    private Post_item post;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -194,7 +197,26 @@ public class FeedFragment extends Fragment {
         //end
 
 
+        //story thumbnail
+        mDatabaseReference3 = FirebaseDatabase.getInstance().getReference("Story");
+        mDatabaseReference3.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot postSnap : snapshot.getChildren()){
+                    post = postSnap.getValue(Post_item.class);
 
+                }
+                Picasso.get()
+                        .load(post.getpicture())
+                        .into(mStory);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(),"Firebase Error",Toast.LENGTH_LONG).show();
+            }
+        });
+        //end
 
 
 
@@ -210,7 +232,6 @@ public class FeedFragment extends Fragment {
                 Collections.reverse(mPosts);
 
                 mImageAdapter = new ImageAdapter(getContext(),mPosts);
-
                 mRecyclerView.setAdapter(mImageAdapter);
                 mRecyclerView.setVisibility(View.VISIBLE);
                 mProgressbar.setVisibility(GONE);
@@ -245,8 +266,8 @@ public class FeedFragment extends Fragment {
 
 
         //sample - ca-app-pub-3940256099942544/1033173712
-        //my ad unit - ca-app-pub-7056810959104454/5312492420
-        InterstitialAd.load(getContext(),"ca-app-pub-3940256099942544/1033173712", adRequest, new InterstitialAdLoadCallback() {
+        //my story ad unit - ca-app-pub-7056810959104454/8146193841
+        InterstitialAd.load(getContext(),"ca-app-pub-7056810959104454/8146193841", adRequest, new InterstitialAdLoadCallback() {
             @Override
             public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
                 // The mInterstitialAd reference will be null until

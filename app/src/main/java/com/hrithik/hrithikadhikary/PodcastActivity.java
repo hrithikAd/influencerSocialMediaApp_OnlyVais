@@ -150,7 +150,7 @@ public class PodcastActivity extends AppCompatActivity {
 
         //sample - ca-app-pub-3940256099942544/1033173712
         //my ad unit - ca-app-pub-7056810959104454/5312492420
-        InterstitialAd.load(this,"ca-app-pub-3940256099942544/1033173712", adRequest, new InterstitialAdLoadCallback() {
+        InterstitialAd.load(this,"ca-app-pub-7056810959104454/5312492420", adRequest, new InterstitialAdLoadCallback() {
             @Override
             public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
                 // The mInterstitialAd reference will be null until

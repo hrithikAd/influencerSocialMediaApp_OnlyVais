@@ -1,33 +1,47 @@
 package com.hrithik.hrithikadhikary;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.hrithik.hrithikadhikary.ui.utils.ImageAdapter;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 import jp.shts.android.storiesprogressview.StoriesProgressView;
 
+import static android.view.View.GONE;
+
 public class StoryActivity extends AppCompatActivity implements StoriesProgressView.StoriesListener {
 
+
+    private ArrayList<Post_item> mPosts;
+
+    private DatabaseReference mDatabaseReference;
     // on below line we are creating a int array
     // in which we are storing all our image ids.
-    private final int[] resources = new int[]{
-            R.drawable.profilepic,
-            R.drawable.profilepic,
-            R.drawable.profilepic,
-            R.drawable.profilepic,
-            R.drawable.profilepic,
-            R.drawable.profilepic,
-    };
+
 
     // on below line we are creating variable for
     // our press time and time limit to display a story.
     long pressTime = 0L;
-    long limit = 500L;
+    long limit = 2000L;
 
     // on below line we are creating variables for
     // our progress bar view and image view .
@@ -74,6 +88,44 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+        //get the images
+        mPosts = new ArrayList<>();
+
+        ProgressDialog Dialog = new ProgressDialog(StoryActivity.this);
+        Dialog.setMessage("Loading...Jio naki?");
+        Dialog.show();
+
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("Story");
+        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                mPosts.clear();
+                for(DataSnapshot postSnap : snapshot.getChildren()){
+                    Post_item post = postSnap.getValue(Post_item.class);
+                    mPosts.add(post);
+                }
+                Collections.reverse(mPosts);
+                Dialog.hide();
+                showStory();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(StoryActivity.this,"Firebase Error",Toast.LENGTH_LONG).show();
+            }
+        });
+        //end
+
+     //   Post_item post = new Post_item("-Me23z0kirajUn3VqN_J",0,"Hi girls!!!",null,"https://firebasestorage.googleapis.com/v0/b/onlyvais-391df.appspot.com/o/Story%2F1625696757032.jpg?alt=media&token=2b079424-30a7-48f9-a009-d09eb42f03d2","08-Jul-2021",2);
+     //   mPosts.add(post);
+
+
+
+    }
+
+    private void showStory() {
+
         // inside in create method below line is use to make a full screen.
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_story);
@@ -82,7 +134,7 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
         storiesProgressView = (StoriesProgressView) findViewById(R.id.stories);
 
         // on below line we are setting the total count for our stories.
-        storiesProgressView.setStoriesCount(resources.length);
+        storiesProgressView.setStoriesCount(mPosts.size());
 
         // on below line we are setting story duration for each story.
         storiesProgressView.setStoryDuration(3000L);
@@ -98,7 +150,9 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
         image = (ImageView) findViewById(R.id.image);
 
         // on below line we are setting image to our image view.
-        image.setImageResource(resources[counter]);
+        Picasso.get()
+                .load(mPosts.get(counter).getpicture())
+                .into(image);
 
         // below is the view for going to the previous story.
         // initializing our previous view.
@@ -132,13 +186,17 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
         // on below line we are calling a set on touch
         // listener method to move to next story.
         skip.setOnTouchListener(onTouchListener);
+
+
     }
 
     @Override
     public void onNext() {
         // this method is called when we move
         // to next progress view of story.
-        image.setImageResource(resources[++counter]);
+        Picasso.get()
+                .load(mPosts.get(++counter).getpicture())
+                .into(image);
     }
 
     @Override
@@ -149,16 +207,16 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
         if ((counter - 1) < 0) return;
 
         // on below line we are setting image to image view
-        image.setImageResource(resources[--counter]);
+        Picasso.get()
+                .load(mPosts.get(--counter).getpicture())
+                .into(image);
     }
 
     @Override
     public void onComplete() {
         // when the stories are completed this method is called.
         // in this method we are moving back to initial main activity.
-        Intent i = new Intent(StoryActivity.this, MainActivity.class);
-        startActivity(i);
-        finish();
+        super.onBackPressed();
     }
 
     @Override
