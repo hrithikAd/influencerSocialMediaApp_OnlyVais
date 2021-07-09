@@ -41,7 +41,7 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
     // on below line we are creating variable for
     // our press time and time limit to display a story.
     long pressTime = 0L;
-    long limit = 2000L;
+    long limit = 500L;
 
     // on below line we are creating variables for
     // our progress bar view and image view .

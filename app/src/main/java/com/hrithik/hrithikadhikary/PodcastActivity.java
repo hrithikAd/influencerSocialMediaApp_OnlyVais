@@ -25,17 +25,22 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.OnUserEarnedRewardListener;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
 
-public class PodcastActivity extends AppCompatActivity {
+import org.jetbrains.annotations.NotNull;
+
+public class PodcastActivity extends AppCompatActivity implements OnUserEarnedRewardListener {
     private WebView webView;
     private ImageView backgroundView;
-    private InterstitialAd mInterstitialAd;
     private String podcastLink;
-
+    private RewardedInterstitialAd rewardedInterstitialAd;
     private ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +54,62 @@ public class PodcastActivity extends AppCompatActivity {
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
+                loadAd();
+            }
+
+            private void loadAd() {
+                // Use the test ad unit ID to load an ad.
+
+
+                //my ad id:  ca-app-pub-7056810959104454/8774564017
+                //test ad id: ca-app-pub-3940256099942544/5354046379
+
+                RewardedInterstitialAd.load(getApplicationContext(), "ca-app-pub-7056810959104454/8774564017",
+                        new AdRequest.Builder().build(),  new RewardedInterstitialAdLoadCallback() {
+                            @Override
+                            public void onAdLoaded(RewardedInterstitialAd ad) {
+                                rewardedInterstitialAd = ad;
+
+                                rewardedInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                                    /** Called when the ad failed to show full screen content. */
+                                    @Override
+                                    public void onAdFailedToShowFullScreenContent(AdError adError) {
+
+                                        progressBar.setVisibility(View.GONE);
+
+
+                                        backgroundView.setVisibility(View.VISIBLE);
+
+                                        webView.setVisibility(View.VISIBLE);
+
+                                    }
+
+                                    /** Called when ad showed the full screen content. */
+                                    @Override
+                                    public void onAdShowedFullScreenContent() {
+                                    }
+
+                                    /** Called when full screen content is dismissed. */
+                                    @Override
+                                    public void onAdDismissedFullScreenContent() {
+
+                                        progressBar.setVisibility(View.GONE);
+
+                                        backgroundView.setVisibility(View.VISIBLE);
+
+                                        webView.setVisibility(View.VISIBLE);
+
+
+                                    }
+                                });
+
+                            }
+                            @Override
+                            public void onAdFailedToLoad(LoadAdError loadAdError) {
+                            }
+                        });
             }
         });
-        creatPersonalizedAd();
         //end
         //end
 
@@ -95,8 +153,9 @@ public class PodcastActivity extends AppCompatActivity {
     private void showAd() {
 
 
-        if (mInterstitialAd != null) {
-            mInterstitialAd.show(PodcastActivity.this);
+        if (rewardedInterstitialAd != null) {
+            rewardedInterstitialAd.show(/* Activity */ PodcastActivity.this,/*
+    OnUserEarnedRewardListener */ PodcastActivity.this);
 
         } else {
 
@@ -108,6 +167,17 @@ public class PodcastActivity extends AppCompatActivity {
             webView.setVisibility(View.VISIBLE);
 
         }
+    }
+
+    @Override
+    public void onUserEarnedReward(@NonNull @NotNull RewardItem rewardItem) {
+
+       progressBar.setVisibility(View.GONE);
+
+
+       backgroundView.setVisibility(View.VISIBLE);
+
+       webView.setVisibility(View.VISIBLE);
     }
 
 
@@ -133,72 +203,13 @@ public class PodcastActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        creatPersonalizedAd();
         super.onBackPressed();
     }
-
-    private void creatPersonalizedAd() {
-
-        AdRequest adRequest = new AdRequest.Builder().build();
-
-        createIntertitialAds(adRequest);
-    }
-
-
-    private void createIntertitialAds(AdRequest adRequest){
-
-
-        //sample - ca-app-pub-3940256099942544/1033173712
-        //my ad unit - ca-app-pub-7056810959104454/5312492420
-        InterstitialAd.load(this,"ca-app-pub-7056810959104454/5312492420", adRequest, new InterstitialAdLoadCallback() {
-            @Override
-            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                // The mInterstitialAd reference will be null until
-                // an ad is loaded.
-                mInterstitialAd = interstitialAd;
-
-
-                mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback(){
-                    @Override
-                    public void onAdDismissedFullScreenContent() {
-
 
                         // Called when fullscreen content is dismissed.
 
 
-                        progressBar.setVisibility(View.GONE);
 
 
-                        backgroundView.setVisibility(View.VISIBLE);
-
-                        webView.setVisibility(View.VISIBLE);
-
-                        creatPersonalizedAd();
-                    }
-
-                    @Override
-                    public void onAdFailedToShowFullScreenContent(AdError adError) {
-                        // Called when fullscreen content failed to show.
-                    }
-
-                    @Override
-                    public void onAdShowedFullScreenContent() {
-                        // Called when fullscreen content is shown.
-                        // Make sure to set your reference to null so you don't
-                        // show it a second time.
-                        mInterstitialAd = null;
-                    }
-                });
-
-
-            }
-
-            @Override
-            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-
-                mInterstitialAd = null;
-            }
-        });
-    }
 
 }

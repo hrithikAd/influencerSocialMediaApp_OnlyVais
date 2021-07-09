@@ -30,6 +30,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -118,7 +119,7 @@ public class FeedFragment extends Fragment {
             public void onClick(View v) {
 
 
-                if (mInterstitialAd != null) {
+                if (mInterstitialAd != null && getRandomBoolean() == true) {
                     mInterstitialAd.show(getActivity());
 
                 } else {
@@ -128,7 +129,7 @@ public class FeedFragment extends Fragment {
 
                 }
 
-                //border width 3
+                //border width 4
                 mStory.setBorderWidth(0);
             }
         });
@@ -233,9 +234,10 @@ public class FeedFragment extends Fragment {
 
                 mImageAdapter = new ImageAdapter(getContext(),mPosts);
                 mRecyclerView.setAdapter(mImageAdapter);
+
+                mStory.setVisibility(View.VISIBLE);
                 mRecyclerView.setVisibility(View.VISIBLE);
                 mProgressbar.setVisibility(GONE);
-                mStory.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -310,5 +312,10 @@ public class FeedFragment extends Fragment {
                 mInterstitialAd = null;
             }
         });
+    }
+
+    public boolean getRandomBoolean() {
+        Random random = new Random();
+        return random.nextBoolean();
     }
 }
