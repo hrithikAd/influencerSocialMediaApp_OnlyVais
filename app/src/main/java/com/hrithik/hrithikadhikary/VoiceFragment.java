@@ -193,46 +193,42 @@ private Button joinButton;
 
 
         //mod check
-        mDatabaseReferenceMod = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
-        mDatabaseReferenceMod.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            mDatabaseReferenceMod = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
+            mDatabaseReferenceMod.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                User thisUser = snapshot.getValue(User.class);
+                    User thisUser = snapshot.getValue(User.class);
 
-                if(thisUser.getRole().contains("vcMute")){
+                    if (thisUser.getRole().contains("vcMute")) {
 
-                    Toast.makeText(getContext(),"You are temporarily muted by mods!!",Toast.LENGTH_LONG).show();
-                    joinButton.setEnabled(false);
-                    joinButton2.setEnabled(false);
-                    joinButton3.setEnabled(false);
+                        Toast.makeText(getContext(), "You are temporarily muted by mods!!", Toast.LENGTH_LONG).show();
+                        joinButton.setEnabled(false);
+                        joinButton2.setEnabled(false);
+                        joinButton3.setEnabled(false);
+                    } else {
+
+                        joinButton.setEnabled(true);
+                        joinButton2.setEnabled(true);
+                    }
+
+
+                    //mod only channel
+                    if (thisUser.getRole().contains("mod") || thisUser.getRole().contains("admin")) {
+
+                        joinButton3.setEnabled(true);
+                    } else {
+
+                        joinButton3.setEnabled(false);
+                    }
+
                 }
 
-
-                else{
-
-                    joinButton.setEnabled(true);
-                    joinButton2.setEnabled(true);
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(getContext(), "Firebase Error", Toast.LENGTH_LONG).show();
                 }
-
-
-                //mod only channel
-                if(thisUser.getRole().contains("mod") || thisUser.getRole().contains("admin")){
-
-                    joinButton3.setEnabled(true);
-                }
-                else{
-
-                    joinButton3.setEnabled(false);
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(),"Firebase Error",Toast.LENGTH_LONG).show();
-            }
-        });
+            });
 
         //end
 

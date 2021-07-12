@@ -14,6 +14,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,6 +50,7 @@ public class MembersFragment extends Fragment {
     private ProgressBar progressBar;
     private TextView t1,t2,t3,t4;
 
+    private FirebaseAuth mAuth;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,6 +60,8 @@ public class MembersFragment extends Fragment {
 
         getActivity().setTitle("লোকজোন");
 
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
         progressBar = RootView.findViewById(R.id.memberProgressBar);
 
@@ -65,6 +70,8 @@ public class MembersFragment extends Fragment {
         t2 = RootView.findViewById(R.id.modText);
 
         t3 = RootView.findViewById(R.id.memberText);
+
+
 
         t4 = RootView.findViewById(R.id.muteText);
 
@@ -101,6 +108,7 @@ public class MembersFragment extends Fragment {
         recyclerViewMember.setLayoutManager(new LinearLayoutManager(getContext()));
         MemberList = new ArrayList<>();
         recyclerViewMember.setLayoutManager(new LinearLayoutManager(getContext()));
+
 
         //mute
         recyclerViewMute = RootView.findViewById(R.id.muteRecycler);
@@ -158,23 +166,31 @@ public class MembersFragment extends Fragment {
                 recyclerViewMute.setAdapter(memberAdapter);
 
 
-                //member
-                if (MemberList.size() > 0) {
-                    Collections.sort(MemberList, new Comparator<User>() {
-                        @Override
-                        public int compare(final User object1, final User object2) {
-                            return object1.getDisplayName().compareTo(object2.getDisplayName());
-                        }
-                    });
+                if(currentUser.getUid().equalsIgnoreCase("SDe5xSNOYsPMfke8xL2gAMuOQh32")) {
+
+                    //member
+                    if (MemberList.size() > 0) {
+                        Collections.sort(MemberList, new Comparator<User>() {
+                            @Override
+                            public int compare(final User object1, final User object2) {
+                                return object1.getDisplayName().compareTo(object2.getDisplayName());
+                            }
+                        });
+                    }
+
+                    memberAdapter = new MemberAdapter(getContext(),MemberList);
+                    recyclerViewMember.setAdapter(memberAdapter);
+                    t3.setVisibility(View.VISIBLE);
+                }
+                else{
+                    recyclerViewMember.setVisibility(View.GONE);
+                    t3.setVisibility(View.GONE);
                 }
 
-                memberAdapter = new MemberAdapter(getContext(),MemberList);
-                recyclerViewMember.setAdapter(memberAdapter);
 
                 progressBar.setVisibility(View.GONE);
                 t1.setVisibility(View.VISIBLE);
                 t2.setVisibility(View.VISIBLE);
-                t3.setVisibility(View.VISIBLE);
                 t4.setVisibility(View.VISIBLE);
 
             }

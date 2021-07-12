@@ -107,9 +107,12 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
                 }
                 Collections.reverse(mPosts);
                 Dialog.hide();
-                showStory();
-            }
 
+                if(!mPosts.isEmpty()) {
+                    showStory();
+                }
+
+            }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(StoryActivity.this,"Firebase Error",Toast.LENGTH_LONG).show();

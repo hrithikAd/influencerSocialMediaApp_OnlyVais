@@ -64,7 +64,7 @@ public class PodcastActivity extends AppCompatActivity implements OnUserEarnedRe
                 //my ad id:  ca-app-pub-7056810959104454/8774564017
                 //test ad id: ca-app-pub-3940256099942544/5354046379
 
-                RewardedInterstitialAd.load(getApplicationContext(), "ca-app-pub-7056810959104454/8774564017",
+                RewardedInterstitialAd.load(getApplicationContext(), "ca-app-pub-3940256099942544/5354046379",
                         new AdRequest.Builder().build(),  new RewardedInterstitialAdLoadCallback() {
                             @Override
                             public void onAdLoaded(RewardedInterstitialAd ad) {

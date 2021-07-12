@@ -25,25 +25,38 @@
     android:layout_height="wrap_content">
 
 
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/storyLayout">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/profilepic"
+        android:id="@+id/story"
+        android:layout_margin="8dp"
+        app:civ_border_width="4dp"
+        app:civ_border_color="@color/purple_200"
+        android:visibility="invisible"
+        ></de.hdodenhof.circleimageview.CircleImageView>
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:src="@drawable/profilepic"
-            android:id="@+id/story"
-            android:layout_margin="8dp"
-            app:civ_border_width="4dp"
-            app:civ_border_color="@color/purple_200"
-            android:visibility="invisible"
-            ></de.hdodenhof.circleimageview.CircleImageView>
-
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="JOIN PRIME"
+        android:layout_margin="8dp"
+        android:layout_centerVertical="true"
+        android:id="@+id/primeBtn"
+        ></Button>
+</RelativeLayout>
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/recycler_view"
-            android:layout_below="@+id/story"
+            android:layout_below="@+id/storyLayout"
             >
 
         </androidx.recyclerview.widget.RecyclerView>
@@ -65,8 +78,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/bannerDP"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:src="@mipmap/ic_launcher"/>
 
         <TextView
@@ -78,12 +91,12 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/bannerDP"
             android:layout_below="@+id/bannerName"
-            android:textSize="14sp"
+            android:textSize="10sp"
             android:textColor="@color/black"
             />
 
         <TextView
-            android:textSize="16sp"
+            android:textSize="11sp"
             android:id="@+id/bannerName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

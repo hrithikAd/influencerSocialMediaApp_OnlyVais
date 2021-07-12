@@ -11,12 +11,16 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.anjlab.android.iab.v3.BillingProcessor;
+import com.anjlab.android.iab.v3.SkuDetails;
+import com.anjlab.android.iab.v3.TransactionDetails;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -48,7 +52,7 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 import static android.view.View.GONE;
 
-public class FeedFragment extends Fragment {
+public class FeedFragment extends Fragment implements BillingProcessor.IBillingHandler {
     private RecyclerView mRecyclerView;
     private ImageAdapter mImageAdapter;
     private DatabaseReference mDatabaseReference;
@@ -67,9 +71,14 @@ public class FeedFragment extends Fragment {
 
     private InterstitialAd mInterstitialAd;
 
-    private int DELAY = 3000; // Delay time in milliseconds
+    private int DELAY = 5000; // Delay time in milliseconds
 
     private Post_item post;
+
+    private BillingProcessor bp;
+    private Button mprime;
+    private TransactionDetails transactionDetails = null;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -97,6 +106,8 @@ public class FeedFragment extends Fragment {
 
         mStory = RootView.findViewById(R.id.story);
 
+        mprime = RootView.findViewById(R.id.primeBtn);
+
         //chat notification
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -118,21 +129,54 @@ public class FeedFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                if (post != null) {
 
-                if (mInterstitialAd != null && getRandomBoolean() == true) {
-                    mInterstitialAd.show(getActivity());
+                    if (mInterstitialAd != null && getRandomBoolean() == true) {
+                        mInterstitialAd.show(getActivity());
 
-                } else {
+                    } else {
 
-                    Intent i = new Intent(getContext(), StoryActivity.class);
-                    startActivity(i);
+                        Intent i = new Intent(getContext(), StoryActivity.class);
+                        startActivity(i);
 
+                    }
+
+                    //border width 4
+                    mStory.setBorderWidth(0);
+                }
+                else{
+                    Toast.makeText(getContext(),"No Story Available",Toast.LENGTH_SHORT).show();
                 }
 
-                //border width 4
-                mStory.setBorderWidth(0);
             }
         });
+
+
+
+
+
+
+
+
+
+
+        //prime
+        bp = new BillingProcessor(getContext(), getResources().getString(R.string.subscription_license), this);
+        bp.initialize();
+        //end
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         //Banner
@@ -203,13 +247,16 @@ public class FeedFragment extends Fragment {
         mDatabaseReference3.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot postSnap : snapshot.getChildren()){
+                for (DataSnapshot postSnap : snapshot.getChildren()) {
                     post = postSnap.getValue(Post_item.class);
 
                 }
-                Picasso.get()
-                        .load(post.getpicture())
-                        .into(mStory);
+
+                if (post != null) {
+                    Picasso.get()
+                            .load(post.getpicture())
+                            .into(mStory);
+                }
             }
 
             @Override
@@ -269,7 +316,7 @@ public class FeedFragment extends Fragment {
 
         //sample - ca-app-pub-3940256099942544/1033173712
         //my story ad unit - ca-app-pub-7056810959104454/8146193841
-        InterstitialAd.load(getContext(),"ca-app-pub-7056810959104454/8146193841", adRequest, new InterstitialAdLoadCallback() {
+        InterstitialAd.load(getContext(),"ca-app-pub-3940256099942544/1033173712", adRequest, new InterstitialAdLoadCallback() {
             @Override
             public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
                 // The mInterstitialAd reference will be null until
@@ -318,4 +365,65 @@ public class FeedFragment extends Fragment {
         Random random = new Random();
         return random.nextBoolean();
     }
+
+private boolean hasSubscription() {
+    if (transactionDetails != null) {
+        return transactionDetails.purchaseInfo != null;
+    }
+    else{
+        return false;
+    }
+}
+
+    //prime methods
+    @Override
+    public void onBillingInitialized() {
+
+
+        //id
+        transactionDetails = bp.getSubscriptionTransactionDetails(getResources().getString(R.string.product_id));
+
+        mprime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (bp.isSubscriptionUpdateSupported()) {
+                    bp.subscribe(getActivity(), getResources().getString(R.string.product_id));
+                }
+            }
+        });
+        if(hasSubscription()){
+        mprime.setText("PRIME");
+}
+    }
+
+    @Override
+    public void onProductPurchased(String productId, TransactionDetails details) {
+
+    }
+
+    @Override
+    public void onPurchaseHistoryRestored() {
+
+    }
+
+    @Override
+    public void onBillingError(int errorCode, Throwable error) {
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (!bp.handleActivityResult(requestCode, resultCode, data)) {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (bp != null) {
+            bp.release();
+        }
+        super.onDestroy();
+    }
+
 }

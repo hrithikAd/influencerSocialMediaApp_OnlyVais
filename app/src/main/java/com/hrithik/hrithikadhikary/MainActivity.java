@@ -24,6 +24,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.sanojpunchihewa.updatemanager.UpdateManager;
+import com.sanojpunchihewa.updatemanager.UpdateManagerConstant;
 
 import org.jsoup.Jsoup;
 
@@ -31,9 +33,7 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity    {
     FirebaseAuth Fauth;
-    DatabaseReference databaseReference;
-    private String sLatestVersion, sCurrentVersion;
-
+    UpdateManager mUpdateManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,7 +137,12 @@ public class MainActivity extends AppCompatActivity    {
                     FirebaseMessaging.getInstance().subscribeToTopic("/topics/"+Fauth.getCurrentUser().getUid());
 
 
-                    new GetLatestVersion().execute();
+
+                    //check update
+                    CheckUpdate();
+
+
+
 
 
                 } else {
@@ -151,6 +156,9 @@ public class MainActivity extends AppCompatActivity    {
 
 
     }
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -193,88 +201,12 @@ public class MainActivity extends AppCompatActivity    {
     }
 
 
-    private class GetLatestVersion extends AsyncTask<String,Void,String> {
 
-        @Override
-        protected String doInBackground(String... strings) {
+    //inapp update
+    private void CheckUpdate() {
 
-            try {
-                sLatestVersion = Jsoup
-                        .connect("https://play.google.com/store/apps/details?id="
-                        + getPackageName())
-                        .timeout(30000)
-                        .get()
-                        .select("div.hAyfc:nth-child(4)>"+
-                                "span:nth-child(2) > div:nth-child(1)"+
-                                "> span:nth-child(1)")
-                        .first()
-                        .ownText();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return sLatestVersion;
-        }
+        mUpdateManager = UpdateManager.Builder(this).mode(UpdateManagerConstant.IMMEDIATE);
+        mUpdateManager.start();
 
-        @Override
-        protected void onPostExecute(String s) {
-            //get current version
-            sCurrentVersion = BuildConfig.VERSION_NAME;
-
-            if(sLatestVersion!=null){
-
-
-
-               if(!sCurrentVersion.equalsIgnoreCase(sLatestVersion)){
-                    updateAlertDialog();
-                }
-
-            }
-        }
-    }
-
-    private void updateAlertDialog() {
-        AlertDialog.Builder builder
-                = new AlertDialog
-                .Builder(new ContextThemeWrapper(this, R.style.myDialog));
-
-        // Set the message show for the Alert time
-        builder.setMessage("New Update Available!!");
-
-        // Set Alert Title
-        builder.setTitle("OnlyVai");
-
-        // Set Cancelable false
-        // for when the user clicks on the outside
-        // the Dialog Box then it will remain show
-        builder.setCancelable(false);
-
-        // Set the positive button with yes name
-        // OnClickListener method is use of
-        // DialogInterface interface.
-
-        builder
-                .setPositiveButton(
-                        "Update",
-                        new DialogInterface
-                                .OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                                int which)
-                            {
-
-                                // When the user click yes button
-                                // then app will close
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id="+getPackageName())));
-                                dialog.dismiss();
-                            }
-                        });
-
-
-        // Create the Alert dialog
-        AlertDialog alertDialog = builder.create();
-
-        // Show the Alert Dialog box
-        alertDialog.show();
     }
 }

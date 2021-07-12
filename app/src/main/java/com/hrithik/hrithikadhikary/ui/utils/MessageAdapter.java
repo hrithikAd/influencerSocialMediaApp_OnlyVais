@@ -5,6 +5,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +75,27 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ImageVie
 
         }
         //end
+
+        //mentions
+        String mention = null;
+        String msg = postCurrent.getText();
+        int size = 0;
+        for(String st : msg.split(" ")){
+            if(st.startsWith("@")) {
+
+                mention = st;
+                size = st.length();
+
+
+                String mentionColor = "<font color='#83b3c8'>" + mention + "</font>";
+                holder.mMessage.setText(Html.fromHtml(mentionColor + postCurrent.getText().substring(size)));
+                    break;
+            }
+
+            }
+
+        //end
+
 
         //admin & mod
 

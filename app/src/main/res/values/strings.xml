@@ -6,4 +6,8 @@
     <string name="tab_text_4">MEMBER</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="product_id">prime</string>
+
+    <string name="subscription_license">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiLVOnfgIeA84sSPc3l4K/mCvSTH0o48TSHk/Soyvl4OoR9Sk8SEbBn96ayiFJvesqxI0re5YC003auN/mhMMj7eW2f9GO48Omw5P7P3mNYhQmv5MIVCDguXXHmi701Nkf6VW3eIWQfRgLvBD7dh9dk7em9qtDR5mQVjCUVXEkOpN2VeeMhf3cKSsLuMw0Jx4mu7A5KlTViQ7uBAMxpBKU0PGUsHgC7maKx1Z14qAv7t0Mrcdc20QzuhjDpJ7qCcJy9DJKKZKh0Uqies3gI5GDwp02HkmfsaXK7lgKeGahactn4OJ/QaIJhUdJH828tJahppi2mivpcz5QOry01vVeQIDAQAB</string>
 </resources>
