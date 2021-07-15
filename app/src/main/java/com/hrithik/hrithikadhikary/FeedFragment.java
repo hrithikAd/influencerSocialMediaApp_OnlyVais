@@ -5,8 +5,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +15,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.anjlab.android.iab.v3.BillingProcessor;
-import com.anjlab.android.iab.v3.SkuDetails;
-import com.anjlab.android.iab.v3.TransactionDetails;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,14 +25,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hrithik.hrithikadhikary.ui.utils.ImageAdapter;
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
-
 import de.hdodenhof.circleimageview.CircleImageView;
-
-
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.FullScreenContentCallback;
@@ -48,11 +38,9 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
-
-
 import static android.view.View.GONE;
 
-public class FeedFragment extends Fragment implements BillingProcessor.IBillingHandler {
+public class FeedFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private ImageAdapter mImageAdapter;
     private DatabaseReference mDatabaseReference;
@@ -63,7 +51,6 @@ public class FeedFragment extends Fragment implements BillingProcessor.IBillingH
     private ArrayList<Post_item> mPosts;
     private FirebaseAuth mAuth;
     private FriendlyMessage msg;
-    private ViewPager viewPager;
 
     private CircleImageView mStory;
 
@@ -75,9 +62,8 @@ public class FeedFragment extends Fragment implements BillingProcessor.IBillingH
 
     private Post_item post;
 
-    private BillingProcessor bp;
     private Button mprime;
-    private TransactionDetails transactionDetails = null;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -160,10 +146,7 @@ public class FeedFragment extends Fragment implements BillingProcessor.IBillingH
 
 
 
-        //prime
-        bp = new BillingProcessor(getContext(), getResources().getString(R.string.subscription_license), this);
-        bp.initialize();
-        //end
+
 
 
 
@@ -282,9 +265,9 @@ public class FeedFragment extends Fragment implements BillingProcessor.IBillingH
                 mImageAdapter = new ImageAdapter(getContext(),mPosts);
                 mRecyclerView.setAdapter(mImageAdapter);
 
-                mStory.setVisibility(View.VISIBLE);
                 mRecyclerView.setVisibility(View.VISIBLE);
                 mProgressbar.setVisibility(GONE);
+                mStory.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -316,7 +299,7 @@ public class FeedFragment extends Fragment implements BillingProcessor.IBillingH
 
         //sample - ca-app-pub-3940256099942544/1033173712
         //my story ad unit - ca-app-pub-7056810959104454/8146193841
-        InterstitialAd.load(getContext(),"ca-app-pub-3940256099942544/1033173712", adRequest, new InterstitialAdLoadCallback() {
+        InterstitialAd.load(getContext(),"ca-app-pub-7056810959104454/8146193841", adRequest, new InterstitialAdLoadCallback() {
             @Override
             public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
                 // The mInterstitialAd reference will be null until
@@ -364,66 +347,6 @@ public class FeedFragment extends Fragment implements BillingProcessor.IBillingH
     public boolean getRandomBoolean() {
         Random random = new Random();
         return random.nextBoolean();
-    }
-
-private boolean hasSubscription() {
-    if (transactionDetails != null) {
-        return transactionDetails.purchaseInfo != null;
-    }
-    else{
-        return false;
-    }
-}
-
-    //prime methods
-    @Override
-    public void onBillingInitialized() {
-
-
-        //id
-        transactionDetails = bp.getSubscriptionTransactionDetails(getResources().getString(R.string.product_id));
-
-        mprime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (bp.isSubscriptionUpdateSupported()) {
-                    bp.subscribe(getActivity(), getResources().getString(R.string.product_id));
-                }
-            }
-        });
-        if(hasSubscription()){
-        mprime.setText("PRIME");
-}
-    }
-
-    @Override
-    public void onProductPurchased(String productId, TransactionDetails details) {
-
-    }
-
-    @Override
-    public void onPurchaseHistoryRestored() {
-
-    }
-
-    @Override
-    public void onBillingError(int errorCode, Throwable error) {
-
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (!bp.handleActivityResult(requestCode, resultCode, data)) {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        if (bp != null) {
-            bp.release();
-        }
-        super.onDestroy();
     }
 
 }

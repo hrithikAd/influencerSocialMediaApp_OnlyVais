@@ -76,24 +76,25 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ImageVie
         }
         //end
 
-        //mentions
-        String mention = null;
-        String msg = postCurrent.getText();
-        int size = 0;
-        for(String st : msg.split(" ")){
-            if(st.startsWith("@")) {
+        if(!postCurrent.getText().contains(firebaseUser.getDisplayName())) {
+            //mentions
+            String mention = null;
+            String msg = postCurrent.getText();
+            int size = 0;
+            for (String st : msg.split(" ")) {
+                if (st.startsWith("@")) {
 
-                mention = st;
-                size = st.length();
+                    mention = st;
+                    size = st.length();
 
 
-                String mentionColor = "<font color='#83b3c8'>" + mention + "</font>";
-                holder.mMessage.setText(Html.fromHtml(mentionColor + postCurrent.getText().substring(size)));
+                    String mentionColor = "<font color='#83b3c8'>" + mention + "</font>";
+                    holder.mMessage.setText(Html.fromHtml(mentionColor + postCurrent.getText().substring(size)));
                     break;
-            }
+                }
 
             }
-
+        }
         //end
 
 

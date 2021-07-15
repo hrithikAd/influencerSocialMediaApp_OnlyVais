@@ -25,7 +25,7 @@
         android:layout_toRightOf="@id/photoImageView"
         android:layout_below="@+id/nameTextView"
         android:textSize="14sp"
-        android:textColor="#FFFFFF"
+        android:textColor="#cccccc"
         />
 
     <TextView

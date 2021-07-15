@@ -18,8 +18,11 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.FullScreenContentCallback;
@@ -64,7 +67,7 @@ public class PodcastActivity extends AppCompatActivity implements OnUserEarnedRe
                 //my ad id:  ca-app-pub-7056810959104454/8774564017
                 //test ad id: ca-app-pub-3940256099942544/5354046379
 
-                RewardedInterstitialAd.load(getApplicationContext(), "ca-app-pub-3940256099942544/5354046379",
+                RewardedInterstitialAd.load(getApplicationContext(), "ca-app-pub-7056810959104454/8774564017",
                         new AdRequest.Builder().build(),  new RewardedInterstitialAdLoadCallback() {
                             @Override
                             public void onAdLoaded(RewardedInterstitialAd ad) {
@@ -135,10 +138,14 @@ public class PodcastActivity extends AppCompatActivity implements OnUserEarnedRe
         }
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 
+
         //end
 
         webView.setWebViewClient(new Callback());
         webView.loadData(podcastLink, "text/html", null);
+
+
+
 
         (new Handler()).postDelayed(this::showAd, 5000);
 
@@ -201,12 +208,20 @@ public class PodcastActivity extends AppCompatActivity implements OnUserEarnedRe
         super.onResume();
     }
 
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        webView.destroy();
     }
 
-                        // Called when fullscreen content is dismissed.
+    @Override
+    protected void onStop() {
+        super.onStop();
+        webView.destroy();
+    }
+
+    // Called when fullscreen content is dismissed.
 
 
 
