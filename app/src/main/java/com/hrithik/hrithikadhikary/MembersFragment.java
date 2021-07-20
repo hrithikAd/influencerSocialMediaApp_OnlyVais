@@ -52,6 +52,8 @@ public class MembersFragment extends Fragment {
 
     private FirebaseAuth mAuth;
 
+    private User currentMember;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -147,6 +149,10 @@ public class MembersFragment extends Fragment {
                     else{
                         MuteList.add(member);
                     }
+
+                    if(member.getUserId().equalsIgnoreCase(currentUser.getUid())){
+                        currentMember = member;
+                    }
                 }
 
 
@@ -161,12 +167,9 @@ public class MembersFragment extends Fragment {
 
 
 
-                //mute
-                memberAdapter = new MemberAdapter(getContext(),MuteList);
-                recyclerViewMute.setAdapter(memberAdapter);
 
 
-                if(currentUser.getUid().equalsIgnoreCase("SDe5xSNOYsPMfke8xL2gAMuOQh32")) {
+                if(currentMember.getRole().equalsIgnoreCase("Mod") || currentMember.getRole().equalsIgnoreCase("admin")) {
 
                     //member
                     if (MemberList.size() > 0) {
@@ -181,17 +184,23 @@ public class MembersFragment extends Fragment {
                     memberAdapter = new MemberAdapter(getContext(),MemberList);
                     recyclerViewMember.setAdapter(memberAdapter);
                     t3.setVisibility(View.VISIBLE);
+
+                    //mute
+                    memberAdapter = new MemberAdapter(getContext(),MuteList);
+                    recyclerViewMute.setAdapter(memberAdapter);
+                    t4.setVisibility(View.VISIBLE);
                 }
                 else{
                     recyclerViewMember.setVisibility(View.GONE);
                     t3.setVisibility(View.GONE);
+                    recyclerViewMute.setVisibility(View.GONE);
+                    t4.setVisibility(View.GONE);
                 }
 
 
                 progressBar.setVisibility(View.GONE);
                 t1.setVisibility(View.VISIBLE);
                 t2.setVisibility(View.VISIBLE);
-                t4.setVisibility(View.VISIBLE);
 
             }
 

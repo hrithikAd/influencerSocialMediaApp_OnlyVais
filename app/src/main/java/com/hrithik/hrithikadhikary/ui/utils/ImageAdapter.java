@@ -423,12 +423,14 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child(firebaseUser.getUid()).exists()){
-                    imageView.setImageResource(R.drawable.ic_baseline_favorite_24);
-                    imageView.setTag("liked");
-                } else{
-                    imageView.setImageResource(R.drawable.ic_baseline_favorite_border_24);
-                    imageView.setTag("like");
+                if(firebaseUser!=null && dataSnapshot!=null) {
+                    if (dataSnapshot.child(firebaseUser.getUid()).exists()) {
+                        imageView.setImageResource(R.drawable.ic_baseline_favorite_24);
+                        imageView.setTag("liked");
+                    } else {
+                        imageView.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+                        imageView.setTag("like");
+                    }
                 }
             }
 

@@ -38,7 +38,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ImageVie
     private Context mContext;
     private List<com.hrithik.hrithikadhikary.Comment> mComment = new ArrayList<>();
     private String postid;
-
+    private User currentMember;
+    private DatabaseReference mDatabaseReference;
     private FirebaseUser firebaseUser;
 
     public CommentAdapter(CommentsActivity context, List<com.hrithik.hrithikadhikary.Comment> commentList, String postid){
@@ -59,6 +60,29 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ImageVie
     public void onBindViewHolder(@NonNull final CommentAdapter.ImageViewHolder holder, final int position) {
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+
+        //mod check
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+                currentMember = snapshot.getValue(User.class);
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(mContext,"Firebase Error",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //end
+
+
         final com.hrithik.hrithikadhikary.Comment comment = (com.hrithik.hrithikadhikary.Comment) mComment.get(position);
 
         holder.comment.setText(comment.getComment());
@@ -74,19 +98,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ImageVie
             }
         });
 
-        holder.image_profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext, MainActivity.class);
-                intent.putExtra("publisherid", comment.getPublisher());
-                mContext.startActivity(intent);
-            }
-        });
 
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if (comment.getPublisher().equals(firebaseUser.getUid())) {
+                if (comment.getPublisher().equals(firebaseUser.getUid()) || currentMember.getRole().equalsIgnoreCase("mod") || currentMember.getRole().equalsIgnoreCase("Admin") ) {
 
                     AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
                     alertDialog.setTitle("Do you want to delete?");

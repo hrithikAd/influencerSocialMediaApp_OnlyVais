@@ -51,7 +51,9 @@ import com.hrithik.hrithikadhikary.ui.utils.MessageAdapter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -216,8 +218,8 @@ public class ChatFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // TODO: Send messages on click
-
-                FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), currentUser.getDisplayName(), currentUser.getPhotoUrl().toString(), currentUser.getUid());
+                String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+                FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), currentUser.getDisplayName(), currentUser.getPhotoUrl().toString(), currentUser.getUid(),timeStamp);
                 mMessageDataBaseReference.push().setValue(friendlyMessage);
 
                 //noti

@@ -6,6 +6,7 @@ public class FriendlyMessage {
     private String name;
     private String photoUrl;
     private String userId;
+    private String timestamp;
 
     public FriendlyMessage() {
     }
@@ -17,11 +18,21 @@ public class FriendlyMessage {
     }
 
 
+
+
     public FriendlyMessage(String text, String name, String photoUrl, String userId) {
         this.text = text;
         this.name = name;
         this.photoUrl = photoUrl;
         this.userId = userId;
+    }
+
+    public FriendlyMessage(String text, String name, String photoUrl, String userId, String timestamp) {
+        this.text = text;
+        this.name = name;
+        this.photoUrl = photoUrl;
+        this.userId = userId;
+        this.timestamp = timestamp;
     }
 
 
@@ -52,4 +63,9 @@ public class FriendlyMessage {
     public String getUserId(){return userId;}
 
     public void setUserId(String userId){this.userId = userId;}
+
+    public  String getTimestamp(){return timestamp;}
+
+    public void setTimestamp(String timestamp){this.timestamp = timestamp;}
+
 }

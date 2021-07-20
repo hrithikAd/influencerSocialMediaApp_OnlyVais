@@ -74,8 +74,15 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.VoiceViewH
                     @Override
                     public void onClick(View v) {
 
-                        if((thisUser.getRole().equalsIgnoreCase("mod") || thisUser.getRole().equalsIgnoreCase("admin") && !user.getRole().equalsIgnoreCase("admin") && !user.getRole().equalsIgnoreCase("mod"))){
-                            modActivity(user);
+                        if((thisUser.getRole().equalsIgnoreCase("mod") || thisUser.getRole().equalsIgnoreCase("Admin") )){
+
+                            if( !user.getRole().equalsIgnoreCase("admin") && !user.getRole().equalsIgnoreCase("mod")) {
+                                modActivity(user);
+                            }
+
+                            if(user.getRole().equalsIgnoreCase("mod") && thisUser.getRole().equalsIgnoreCase("Admin")){
+                                modActivity(user);
+                            }
                         }
 
                     }
@@ -86,8 +93,16 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.VoiceViewH
                     @Override
                     public void onClick(View v) {
 
-                        if((thisUser.getRole().equalsIgnoreCase("mod") || thisUser.getRole().equalsIgnoreCase("admin") && !user.getRole().equalsIgnoreCase("admin") && !user.getRole().equalsIgnoreCase("mod"))){
-                            modActivity(user);
+                        if((thisUser.getRole().equalsIgnoreCase("mod") || thisUser.getRole().equalsIgnoreCase("Admin") )){
+
+                            if( !user.getRole().equalsIgnoreCase("admin") && !user.getRole().equalsIgnoreCase("mod")) {
+                                modActivity(user);
+                            }
+
+                            if(user.getRole().equalsIgnoreCase("mod") && thisUser.getRole().equalsIgnoreCase("Admin")){
+                                modActivity(user);
+                            }
+
                         }
 
                     }
